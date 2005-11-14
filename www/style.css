@@ -16,7 +16,6 @@ a:hover {
   color: #595252;
 }
 
-
 #header {
   border-bottom: 1px solid #595252;
   width: 100%;
@@ -68,4 +67,69 @@ a:hover {
   background-color: #595252;
   font-weight: bold;
   color: #ffffff;
+}
+
+#right_menu {
+  border-left: 1px solid #6a70e9;
+  border-bottom: 1px solid #6a70e9;
+  font-size: small;
+  width: 175px;
+  float: right;
+}
+
+#right_menu a:link, #right_menu a:visited, #right_menu a:active {
+  color: #595252;
+}
+
+#right_menu a:hover {
+  color: #6a70e9;
+}
+
+#right_menu ul {
+  margin: 0px;
+  padding: 0px 0px 3px 0px;
+  font-size: small;
+}
+
+#right_menu li {
+  list-style-type: none;
+  font-size: smaller;
+  padding-left: 15px;
+}
+
+.right_menu_header h5 {
+  margin: 0px;
+  padding: 3px;
+  border-bottom: 1px solid #6a70e9;
+  background-color: #595252;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+#content {
+  margin: 0px;
+  padding: 15px;
+  position: absolute;
+  left: 175px;
+  padding-right: 175px;
+}
+
+#content h3, h4 {
+  color: #6a70e9;
+}
+
+#content p {
+  font-size: smaller;
+}
+
+#content a {
+  text-decoration: none;
+}
+
+#content a:link, #content a:visited, #content a:active {
+  color: #6a70e9;
+}
+
+#content a:hover {
+  color: #595252;
 }
