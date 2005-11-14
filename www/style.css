@@ -1,7 +1,7 @@
 body {
   margin: 0px;
   padding: 0px;
-  font-family: lucida sans, Verdana, Helvetica, Arial, sans-serif;
+  font-family: Verdana, lucida sans, Arial, Helvetica, sans-serif;
 }
 
 a {
@@ -51,7 +51,7 @@ a:hover {
 
 #left_menu ul {
   margin: 0px;
-  padding: 0px;
+  padding: 0px 0px 3px 0px;
   font-size: small;
 }
 
