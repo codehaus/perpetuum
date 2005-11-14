@@ -1,23 +1,7 @@
 body {
   margin: 0px;
   padding: 0px;
-  
-}
-
-#header {
-  padding: 5px 5px 0px 5px;
-  border-bottom: 1px solid #595252;
-  width: 100%;
-}
-
-#top_menu {
-  background-color: #6a70e9;
-  text-align: right;
-  vertical-align: middle;
-  border-bottom: 1px solid #595252;
   font-family: lucida sans, Verdana, Helvetica, Arial, sans-serif;
-  font-size: small;
-  padding: 3px;
 }
 
 a {
@@ -30,4 +14,26 @@ a:link, a:visited, a:active {
 
 a:hover {
   color: #595252;
+}
+
+
+#header {
+  border-bottom: 1px solid #595252;
+  width: 100%;
+  white-space: nowrap;
+}
+
+#top_menu {
+  background-color: #6a70e9;
+  text-align: right;
+  vertical-align: middle;
+  border-bottom: 1px solid #595252;
+  font-size: small;
+  padding: 3px 0px 3px 0px;
+  width: 100%;
+}
+
+#left_menu {
+  border: 1px; solid #000000;
+  padding: 5px;
 }
