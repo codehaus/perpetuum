@@ -112,10 +112,13 @@ a:hover {
   position: absolute;
   left: 175px;
   padding-right: 175px;
+  margin-right: 175px;
 }
 
 #content h3, h4 {
   color: #6a70e9;
+  margin: 0px;
+  padding: 0px;
 }
 
 #content p {
