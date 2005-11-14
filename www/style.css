@@ -1,0 +1,33 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  
+}
+
+#header {
+  padding: 5px 5px 0px 5px;
+  border-bottom: 1px solid #595252;
+  width: 100%;
+}
+
+#top_menu {
+  background-color: #6a70e9;
+  text-align: right;
+  vertical-align: middle;
+  border-bottom: 1px solid #595252;
+  font-family: lucida sans, Verdana, Helvetica, Arial, sans-serif;
+  font-size: small;
+  padding: 3px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:link, a:visited, a:active {
+  color: #ffffff;
+}
+
+a:hover {
+  color: #595252;
+}
