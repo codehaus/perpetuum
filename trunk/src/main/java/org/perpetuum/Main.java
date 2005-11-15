@@ -43,20 +43,22 @@ public class Main {
         URL jarURL = null;
         File jarFile = null;
         
-        propsString = propsString.substring(0, propsString.indexOf("!"));
-        
-        try {
-			jarURL = new URL(propsString);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-        jarFile = new File(jarURL.getFile());
-        
-        if (jarFile.getName().equals(pBundle.getString("jar.name"))) {
-        	File lib = jarFile.getParentFile();
-        	File home = lib.getParentFile();
-        	
-        	System.setProperty("perpetuum.home", home.getAbsolutePath());
+        if (System.getProperty("perpetuum.home") == null) {
+        	propsString = propsString.substring(0, propsString.indexOf("!"));
+            
+            try {
+    			jarURL = new URL(propsString);
+    		} catch (MalformedURLException e) {
+    			e.printStackTrace();
+    		}
+            jarFile = new File(jarURL.getFile());
+            
+            if (jarFile.getName().equals(pBundle.getString("jar.name"))) {
+            	File lib = jarFile.getParentFile();
+            	File home = lib.getParentFile();
+            	
+            	System.setProperty("perpetuum.home", home.getAbsolutePath());
+            }
         }
 		
 		File lib = new File(System.getProperty("perpetuum.home") + 
@@ -126,8 +128,21 @@ public class Main {
 				File log4j = new File(System.getProperty("perpetuum.home") + 
 						File.separator + "conf" + File.separator + "log4j.conf");
 				
+				File logDir = new File(System.getProperty("perpetuum.home") + 
+						File.separator + "logs");
+				
+				if (!logDir.exists()) {
+					logDir.mkdirs();
+				}
+				
 				if (log4j.exists()) {
 					DOMConfigurator.configure(log4j.getAbsolutePath());
+				} else {
+					URL lu = Main.class.getClassLoader().getResource("log4j.conf");
+					
+					if (lu != null) {
+						DOMConfigurator.configure(lu);
+					}
 				}
 				
 				mainMethod.invoke(clazz, new Object[] { trimmedArgs });
