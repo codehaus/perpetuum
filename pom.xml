@@ -65,6 +65,13 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>src/main/conf</directory>
+                <targetPath>/</targetPath>
+                <includes>
+                    <include>log4j.conf</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
