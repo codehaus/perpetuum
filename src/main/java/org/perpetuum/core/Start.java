@@ -13,8 +13,8 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.perpetuum.command.CommandFinder;
-import org.perpetuum.core.management.PerpetuumAgent;
 import org.perpetuum.core.management.PerpetuumCore;
+import org.perpetuum.core.services.JMXService;
 
 /**
  * Entry point to start the Perpetuum Server
@@ -22,7 +22,7 @@ import org.perpetuum.core.management.PerpetuumCore;
 public class Start {
 	private static Options options = new Options();
 	private static ResourceBundle bundle;
-	private static PerpetuumAgent jmxServer;
+	private static JMXService jmxServer;
 	private static Log log = null;
 	private static boolean help = false;
 	

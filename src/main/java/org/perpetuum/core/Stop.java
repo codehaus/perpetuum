@@ -19,7 +19,7 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.perpetuum.command.CommandFinder;
-import org.perpetuum.core.management.PerpetuumAgent;
+import org.perpetuum.core.services.JMXService;
 
 /**
  * Entry point to stop the Perpetuum Server
@@ -77,10 +77,10 @@ public class Stop {
 			}
 			
 			try {
-				JMXServiceURL jmxServiceUrl = new JMXServiceURL("service:jmx:rmi://localhost/jndi/rmi://localhost:" + rmiPort + "/" + PerpetuumAgent.RMI_JNDI_NAME);
+				JMXServiceURL jmxServiceUrl = new JMXServiceURL("service:jmx:rmi://localhost/jndi/rmi://localhost:" + rmiPort + "/" + JMXService.RMI_JNDI_NAME);
 				JMXConnector cntor = JMXConnectorFactory.connect(jmxServiceUrl, null);
 				MBeanServerConnection mbsc = cntor.getMBeanServerConnection();
-				ObjectName perpetuumCore = new ObjectName(PerpetuumAgent.DOMAIN_NAME + ":type=PerpetuumCore");
+				ObjectName perpetuumCore = new ObjectName(JMXService.DOMAIN_NAME + ":type=PerpetuumCore");
 				
 				mbsc.invoke(perpetuumCore, "stop", null, null);
 			} catch (Exception e) {
