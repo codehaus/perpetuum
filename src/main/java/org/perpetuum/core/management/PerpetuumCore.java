@@ -42,8 +42,8 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	public void start() {
 		if (!status.equals(ServiceMBean.STARTED)) {
 			try {
-				initializeScheduler();
 				initializeJMX();
+				initializeScheduler();
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.error(e.getMessage());
