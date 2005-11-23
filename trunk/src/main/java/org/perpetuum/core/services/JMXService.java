@@ -1,7 +1,6 @@
 package org.perpetuum.core.services;
 
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 
 import javax.management.Attribute;
 import javax.management.MBeanServer;
@@ -13,21 +12,15 @@ import javax.management.remote.JMXServiceURL;
 
 import mx4j.log.Log4JLogger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.perpetuum.command.CommandFinder;
-
-public class JMXService implements Service {
+public class JMXService extends AbstractService {
 	public static final String RMI_JNDI_NAME = "RMIConnector";
 	public static final String DOMAIN_NAME = "PerpetuumDomain";
 	public static final String NAME = "JMXServer";
-	private Log log = null;
 	private MBeanServer mbs = null;
 	private ObjectName rmiRegistry = null;
 	private ObjectName httpAdaptor = null;
 	private ObjectName xsltProcessor = null;
 	private JMXConnectorServer connectorServer = null;
-	private ResourceBundle bundle = null;
 	private int httpPort = 0;
 	private int rmiPort = 0;
 	private String rmiStatus = Service.STOPPED;
@@ -35,30 +28,25 @@ public class JMXService implements Service {
 	private String httpStatus = Service.STOPPED;
 	
 	public JMXService() {
-		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
-		
 		System.setProperty("mx4j.log.priority", "debug");
 		mx4j.log.Log.redirectTo(new Log4JLogger());
 		
-		bundle = finder.doFindCommandBundle("start");
-		log = LogFactory.getLog(JMXService.class);
-		
-		ServiceRegistry.getDefault().register(NAME, this);
+		prepare(NAME);
 	}
 	
 	public void start() throws Exception {
 		try {
 			initializeMBeanServer();
 			jmxStatus = Service.STARTED;
-			log.info(bundle.getString("jmx.started"));
+			log.info(startBundle.getString("jmx.started"));
 			
 			initializeRMIRegistry();
 			rmiStatus = Service.STARTED;
-			log.info(MessageFormat.format(bundle.getString("jmx.rmi.started"), new Object[] { String.valueOf(rmiPort) }));
+			log.info(MessageFormat.format(startBundle.getString("jmx.rmi.started"), new Object[] { String.valueOf(rmiPort) }));
 			
 			initializeHttpAdaptor();
 			httpStatus = Service.STARTED;
-			log.info(MessageFormat.format(bundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
+			log.info(MessageFormat.format(startBundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
 		} catch (Exception e) {
 			stop();
 			
@@ -101,13 +89,13 @@ public class JMXService implements Service {
 				connectorServer.stop();
 				mbs.invoke(rmiRegistry, "stop", null, null);
 				mbs.unregisterMBean(rmiRegistry);
-				log.info(bundle.getString("jmx.rmi.stopped"));
+				log.info(startBundle.getString("jmx.rmi.stopped"));
 			}
 			
 			if (httpStatus.equals(Service.STARTED)) {
 				mbs.invoke(httpAdaptor, "stop", null, null);
 				mbs.unregisterMBean(httpAdaptor);
-				log.info(bundle.getString("jmx.http.stopped"));
+				log.info(startBundle.getString("jmx.http.stopped"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,7 +104,7 @@ public class JMXService implements Service {
 		
 		if (jmxStatus.equals(Service.STARTED)) {
 			MBeanServerFactory.releaseMBeanServer(mbs);
-			log.info(bundle.getString("jmx.stopped"));
+			log.info(startBundle.getString("jmx.stopped"));
 		}
 		
 		ServiceRegistry.getDefault().unRegister(NAME);
