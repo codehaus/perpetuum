@@ -1,38 +1,17 @@
 package org.perpetuum.core.services;
 
-import java.util.ResourceBundle;
-
-import mx4j.log.Log4JLogger;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.perpetuum.command.CommandFinder;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 
-public class SchedulerService implements Service {
+public class SchedulerService extends AbstractService {
 	public static final String NAME = "SchedulerService";
-	private Log log;
-	private ResourceBundle startBundle = null;
-	private ResourceBundle stopBundle = null;
 	private SchedulerFactory sf = null;
 	private Scheduler s = null;
 
 	public SchedulerService() {
-		log = LogFactory.getLog(SchedulerService.class);
-		
-		CommandFinder finder = new CommandFinder(System
-				.getProperty("perpetuum.commands.path"));
-
-		System.setProperty("mx4j.log.priority", "debug");
-		mx4j.log.Log.redirectTo(new Log4JLogger());
-
-		startBundle = finder.doFindCommandBundle("start");
-		stopBundle = finder.doFindCommandBundle("stop");
-
-		ServiceRegistry.getDefault().register(NAME, this);
+		prepare(NAME);
 	}
 
 	public void start() throws Exception {

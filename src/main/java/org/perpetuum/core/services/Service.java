@@ -10,6 +10,11 @@ public interface Service {
 	public static final String STARTED = "Started";
 	
 	/**
+	 * All services have to be prepared so that they are ready to be used
+	 */
+	public void prepare(String name);
+	
+	/**
 	 * All services have to be able to be started
 	 */
 	public void start() throws Exception;
