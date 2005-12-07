@@ -7,6 +7,7 @@ import javax.management.ObjectName;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.perpetuum.command.CommandFinder;
+import org.perpetuum.core.services.DatabaseService;
 import org.perpetuum.core.services.JMXService;
 import org.perpetuum.core.services.SchedulerService;
 
@@ -17,6 +18,7 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	private Log log = null;
 	private JMXService jmxService = null;
 	private SchedulerService schedulerService = null;
+	private DatabaseService databaseService = null;
 	private int httpPort = 0;
 	private int rmiPort = 0;
 	private ResourceBundle startBundle = null;
@@ -44,6 +46,7 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 			try {
 				initializeJMX();
 				initializeScheduler();
+				initializeDatabase();
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.error(e.getMessage());
@@ -59,6 +62,7 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 
 	public void stop() {
 		if (!status.equals(ServiceMBean.STOPPED)) {
+			uninitializeDatabase();
 			uninitializeScheduler();
 			uninitializeJMX();
 		} else {
@@ -104,6 +108,20 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	
 	public void uninitializeScheduler() {
 		schedulerService.stop();
+	}
+	
+	public void initializeDatabase() throws Exception {
+		databaseService = new DatabaseService();
+		
+		try {
+			databaseService.start();
+		} catch (Exception e) {
+			throw new Exception (e);
+		}
+	}
+	
+	public void uninitializeDatabase() {
+		databaseService.stop();
 	}
 	
 	public String getStatus() {

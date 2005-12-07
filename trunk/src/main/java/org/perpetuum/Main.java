@@ -23,14 +23,14 @@ import org.perpetuum.command.CommandFinder;
  */
 public class Main {
 	private static CommandFinder finder = null;
-	private static String basePath = "META-INF/perpetuum/commands/";
+	private static final String BASE_PATH = "META-INF/perpetuum/commands/";
 	private static ResourceBundle pBundle = null;
 	private static ResourceBundle cBundle = null;
 	
 	public static void init() {
-		System.setProperty("perpetuum.commands.path", basePath);
+		System.setProperty("perpetuum.commands.path", BASE_PATH);
 		
-		finder = new CommandFinder(basePath);
+		finder = new CommandFinder(BASE_PATH);
 		pBundle = ResourceBundle.getBundle("perpetuum");
 		
 		setupClasspath();
@@ -38,7 +38,7 @@ public class Main {
 	
 	public static void setupClasspath() {
 		ClassLoader current = Thread.currentThread().getContextClassLoader();
-		URL classURL = Thread.currentThread().getContextClassLoader().getResource(basePath + "start.properties");
+		URL classURL = Thread.currentThread().getContextClassLoader().getResource(BASE_PATH + "start.properties");
         String propsString = classURL.getFile();
         URL jarURL = null;
         File jarFile = null;
@@ -132,6 +132,7 @@ public class Main {
 						File.separator + "logs");
 				
 				if (!logDir.exists()) {
+					System.out.println(pBundle.getString("create.dir") + " " + logDir.getAbsolutePath());
 					logDir.mkdirs();
 				}
 				
@@ -178,7 +179,7 @@ public class Main {
 			        	while (commands.hasMoreElements()) {
 			        		JarEntry je = (JarEntry)commands.nextElement();
 				        	
-				        	if (je.getName().indexOf(basePath) > -1 && !je.getName().equals(basePath)) {
+				        	if (je.getName().indexOf(BASE_PATH) > -1 && !je.getName().equals(BASE_PATH)) {
 				        		String command = je.getName().substring(je.getName().lastIndexOf("/") + 1);
 				        		ResourceBundle bundle = finder.doFindCommandBundle(command.substring(0, command.indexOf(".")));
 				        		 
