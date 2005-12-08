@@ -20,9 +20,7 @@ public class SchedulerService extends AbstractService {
 		try {
 			s = sf.getScheduler();
 		} catch (SchedulerException e) {
-			stop();
-			
-			throw new Exception (e);
+			throw e;
 		}
 		
 		log.info(startBundle.getString("scheduler.started"));
