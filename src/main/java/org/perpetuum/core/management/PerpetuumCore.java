@@ -58,18 +58,20 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		}
 		
 		status = ServiceMBean.STARTED;
+		
+		log.info(startBundle.getString("start.complete"));
 	}
 
 	public void stop() {
-		if (!status.equals(ServiceMBean.STOPPED)) {
-			uninitializeDatabase();
-			uninitializeScheduler();
-			uninitializeJMX();
-		} else {
-			log.warn(stopBundle.getString("perpetuum.core.already.stopped"));
-		}
+		log.info(startBundle.getString("stop.header"));
+		
+		uninitializeDatabase();
+		uninitializeScheduler();
+		uninitializeJMX();
 		
 		status = ServiceMBean.STOPPED;
+		
+		log.info(startBundle.getString("stop.complete"));
 	}
 	
 	public void uninitializeJMX() {
@@ -92,7 +94,7 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 			
 			jmxService.getMBeanServer().registerMBean(this, objectName);
 		} catch (Exception e) {
-			throw new Exception (e);
+			throw e;
 		}
 	}
 
@@ -102,7 +104,7 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		try {
 			schedulerService.start();
 		} catch (Exception e) {
-			throw new Exception (e);
+			throw e;
 		}
 	}
 	
@@ -116,7 +118,7 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		try {
 			databaseService.start();
 		} catch (Exception e) {
-			throw new Exception (e);
+			throw e;
 		}
 	}
 	

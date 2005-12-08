@@ -3,34 +3,55 @@ package org.perpetuum.core.services;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import org.apache.derby.jdbc.EmbeddedDataSource;
 import org.perpetuum.command.CommandFinder;
 
 public class DatabaseService extends AbstractService {
 	public static final String NAME = "DatabaseService";
 	private final String DATABASE_HOME = System.getProperty("perpetuum.home") + File.separator + "data";
+	private EmbeddedDataSource dataSource = null;
+	private Connection conn = null;
 	
 	public DatabaseService() {
 		prepare(NAME);
 	}
 	
-	public void init() {
-		setDatabaseProperties();
-		initializeDatabase();
+	public void init() throws Exception {
+		try {
+			setDatabaseProperties();
+			initializeDatabase();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 	
-	public void initializeDatabase() {
+	public void initializeDatabase() throws Exception {
+		dataSource = new EmbeddedDataSource();
+		
+		dataSource.setCreateDatabase("create");
+		dataSource.setDatabaseName("perpetuum");
+		
+		try {
+			conn = dataSource.getConnection();
+		} catch (SQLException e) {
+			throw e;
+		}
+		
 		executeDDLIfNecessary();
 	}
 	
 	public void executeDDLIfNecessary() {
-		
+		// We need to specify what needs to be prebuilt/prepopulated
+		// in the database and do that here.
 	}
 	
-	public void setDatabaseProperties() {
+	public void setDatabaseProperties() throws Exception {
 		File derby = new File(System.getProperty("perpetuum.home") + 
 				File.separator + "conf" + File.separator + "derby.conf");
 		
@@ -81,18 +102,26 @@ public class DatabaseService extends AbstractService {
 		ResourceBundle pBundle = ResourceBundle.getBundle("perpetuum");
 		
 		
-		if (!dbHome.exists()) {
-			log.info(pBundle.getString("create.dir") + " " + dbHome.getAbsolutePath());
-			dbHome.mkdirs();
-		} else {
+		try {
+			if (!dbHome.exists()) {
+				log.info(pBundle.getString("create.dir") + " " + dbHome.getAbsolutePath());
+				dbHome.mkdirs();
+			}
+			
 			log.info(startBundle.getString("database.home.found") + ": " + dbHome.getAbsolutePath());
+		} catch (Exception e) {
+			throw e;
 		}
 	}
 
 	public void start() throws Exception {
-		init();
-		
-		log.info(startBundle.getString("database.started"));
+		try {
+			init();
+			
+			log.info(startBundle.getString("database.started"));
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	public void stop() {

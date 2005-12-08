@@ -48,9 +48,7 @@ public class JMXService extends AbstractService {
 			httpStatus = Service.STARTED;
 			log.info(MessageFormat.format(startBundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
 		} catch (Exception e) {
-			stop();
-			
-			throw new Exception (e);
+			throw e;
 		}
 	}
 	
@@ -85,17 +83,17 @@ public class JMXService extends AbstractService {
 	
 	public void stop() {
 		try {
+			if (httpStatus.equals(Service.STARTED)) {
+				mbs.invoke(httpAdaptor, "stop", null, null);
+				mbs.unregisterMBean(httpAdaptor);
+				log.info(startBundle.getString("jmx.http.stopped"));
+			}
+			
 			if (rmiStatus.equals(Service.STARTED)) {
 				connectorServer.stop();
 				mbs.invoke(rmiRegistry, "stop", null, null);
 				mbs.unregisterMBean(rmiRegistry);
 				log.info(startBundle.getString("jmx.rmi.stopped"));
-			}
-			
-			if (httpStatus.equals(Service.STARTED)) {
-				mbs.invoke(httpAdaptor, "stop", null, null);
-				mbs.unregisterMBean(httpAdaptor);
-				log.info(startBundle.getString("jmx.http.stopped"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
