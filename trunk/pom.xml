@@ -73,7 +73,7 @@
             </resource>
             <resource>
                 <directory>src/main/conf</directory>
-                <targetPath>target/classes</targetPath>
+                <targetPath>/</targetPath>
                 <includes>
                     <include>*.conf</include>
                 </includes>
