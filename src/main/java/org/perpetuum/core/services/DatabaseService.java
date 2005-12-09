@@ -101,7 +101,6 @@ public class DatabaseService extends AbstractService {
 		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
 		ResourceBundle pBundle = ResourceBundle.getBundle("perpetuum");
 		
-		
 		try {
 			if (!dbHome.exists()) {
 				log.info(pBundle.getString("create.dir") + " " + dbHome.getAbsolutePath());
@@ -111,6 +110,10 @@ public class DatabaseService extends AbstractService {
 			log.info(startBundle.getString("database.home.found") + ": " + dbHome.getAbsolutePath());
 		} catch (Exception e) {
 			throw e;
+		}
+		
+		if (System.getProperty("derby.stream.error.file") == null) {
+			System.setProperty("derby.stream.error.file", System.getProperty("perpetuum.logs.home") + File.separator + "derby.log");
 		}
 	}
 

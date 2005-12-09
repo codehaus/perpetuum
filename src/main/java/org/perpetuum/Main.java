@@ -136,6 +136,8 @@ public class Main {
 					logDir.mkdirs();
 				}
 				
+				System.setProperty("perpetuum.logs.home", logDir.getAbsolutePath());
+				
 				if (log4j.exists()) {
 					DOMConfigurator.configure(log4j.getAbsolutePath());
 				} else {
