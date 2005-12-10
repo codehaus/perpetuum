@@ -1,5 +1,7 @@
 package org.perpetuum.core.management;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import javax.management.ObjectName;
@@ -10,6 +12,7 @@ import org.perpetuum.command.CommandFinder;
 import org.perpetuum.core.services.DatabaseService;
 import org.perpetuum.core.services.JMXService;
 import org.perpetuum.core.services.SchedulerService;
+import org.perpetuum.core.services.Service;
 
 public class PerpetuumCore implements PerpetuumCoreMBean {
 	private String status = ServiceMBean.STOPPED;
@@ -23,10 +26,11 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	private int rmiPort = 0;
 	private ResourceBundle startBundle = null;
 	private ResourceBundle stopBundle = null;
+	private LinkedList dependencies = null;
 	
 	public PerpetuumCore() {
 		log = LogFactory.getLog(PerpetuumCore.class);
-		jmxService = new JMXService();
+		init();
 		
 		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
 		
@@ -41,12 +45,35 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		}
 	}
 	
+	public void init() {
+		dependencies = new LinkedList();
+		
+		jmxService = new JMXService();
+		schedulerService = new SchedulerService();
+		databaseService = new DatabaseService();
+		
+		dependencies.add(jmxService);
+		dependencies.add(schedulerService);
+		dependencies.add(databaseService);
+	}
+	
 	public void start() {
 		if (!status.equals(ServiceMBean.STARTED)) {
 			try {
-				initializeJMX();
-				initializeScheduler();
-				initializeDatabase();
+				for (Iterator i = dependencies.iterator(); i.hasNext();) {
+					Service cS = (Service)i.next();
+					
+					if (cS instanceof JMXService) {
+						jmxService.setHttpPort(httpPort);
+						jmxService.setRmiPort(rmiPort);
+					}
+					
+					cS.start();
+					
+					if (cS instanceof JMXService) {
+						jmxService.getMBeanServer().registerMBean(this, objectName);
+					}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.error(e.getMessage());
@@ -65,65 +92,24 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	public void stop() {
 		log.info(startBundle.getString("stop.header"));
 		
-		uninitializeDatabase();
-		uninitializeScheduler();
-		uninitializeJMX();
+		for (int i = dependencies.size() - 1; i >= 0; i--) {
+			Service cS = (Service)dependencies.get(i);
+			
+			if (cS instanceof JMXService) {
+				try {
+					jmxService.getMBeanServer().unregisterMBean(objectName);
+				} catch (Exception e) {
+					log.error(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+			
+			cS.stop();
+		}
 		
 		status = ServiceMBean.STOPPED;
 		
 		log.info(startBundle.getString("stop.complete"));
-	}
-	
-	public void uninitializeJMX() {
-		try {
-			jmxService.getMBeanServer().unregisterMBean(objectName);
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-		}
-		
-		jmxService.stop();
-	}
-	
-	public void initializeJMX() throws Exception {
-		jmxService.setHttpPort(httpPort);
-		jmxService.setRmiPort(rmiPort);
-		
-		try {
-			jmxService.start();
-			
-			jmxService.getMBeanServer().registerMBean(this, objectName);
-		} catch (Exception e) {
-			throw e;
-		}
-	}
-
-	public void initializeScheduler() throws Exception {
-		schedulerService = new SchedulerService();
-		
-		try {
-			schedulerService.start();
-		} catch (Exception e) {
-			throw e;
-		}
-	}
-	
-	public void uninitializeScheduler() {
-		schedulerService.stop();
-	}
-	
-	public void initializeDatabase() throws Exception {
-		databaseService = new DatabaseService();
-		
-		try {
-			databaseService.start();
-		} catch (Exception e) {
-			throw e;
-		}
-	}
-	
-	public void uninitializeDatabase() {
-		databaseService.stop();
 	}
 	
 	public String getStatus() {
