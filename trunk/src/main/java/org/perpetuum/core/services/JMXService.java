@@ -34,17 +34,21 @@ public class JMXService extends AbstractService {
 		prepare(NAME);
 	}
 	
+	public void init() throws Exception {
+		initializeMBeanServer();
+		initializeRMIRegistry();
+		initializeHttpAdaptor();
+	}
+	
 	public void start() throws Exception {
 		try {
-			initializeMBeanServer();
-			jmxStatus = Service.STARTED;
-			log.info(bundle.getString("jmx.started"));
+			init();
 			
-			initializeRMIRegistry();
+			connectorServer.start();
 			rmiStatus = Service.STARTED;
 			log.info(MessageFormat.format(bundle.getString("jmx.rmi.started"), new Object[] { String.valueOf(rmiPort) }));
 			
-			initializeHttpAdaptor();
+			mbs.invoke(httpAdaptor, "start", null, null);
 			httpStatus = Service.STARTED;
 			log.info(MessageFormat.format(bundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
 		} catch (Exception e) {
@@ -60,11 +64,13 @@ public class JMXService extends AbstractService {
 	    JMXServiceURL url = new JMXServiceURL("service:jmx:rmi://localhost/jndi/rmi://localhost:" + rmiPort + jndiPath);
 
 	    connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, mbs);
-	    connectorServer.start();
 	}
 	
 	public void initializeMBeanServer() throws Exception {
 		mbs = MBeanServerFactory.createMBeanServer(DOMAIN_NAME);
+		
+		jmxStatus = Service.STARTED;
+		log.info(bundle.getString("jmx.started"));
 	}
 	
 	public void initializeHttpAdaptor()  throws Exception {
@@ -77,8 +83,6 @@ public class JMXService extends AbstractService {
 		
 		mbs.createMBean("mx4j.tools.adaptor.http.XSLTProcessor", xsltProcessor, null);
 		mbs.setAttribute(httpAdaptor, new Attribute("ProcessorName", xsltProcessor));
-		
-		mbs.invoke(httpAdaptor, "start", null, null);
 	}
 	
 	public void stop() {

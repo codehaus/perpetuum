@@ -19,6 +19,8 @@ public abstract class AbstractService implements Service {
 		
 		ServiceRegistry.getDefault().register(name, this);
 	}
+	
+	public abstract void init() throws Exception;
 
 	public abstract void start() throws Exception;
 

@@ -13,6 +13,7 @@ import org.perpetuum.core.services.DatabaseService;
 import org.perpetuum.core.services.JMXService;
 import org.perpetuum.core.services.SchedulerService;
 import org.perpetuum.core.services.Service;
+import org.perpetuum.core.services.WebService;
 
 public class PerpetuumCore implements PerpetuumCoreMBean {
 	private String status = ServiceMBean.STOPPED;
@@ -22,6 +23,7 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	private JMXService jmxService = null;
 	private SchedulerService schedulerService = null;
 	private DatabaseService databaseService = null;
+	private WebService webService = null;
 	private int httpPort = 0;
 	private int rmiPort = 0;
 	private ResourceBundle startBundle = null;
@@ -51,10 +53,12 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		jmxService = new JMXService();
 		schedulerService = new SchedulerService();
 		databaseService = new DatabaseService();
+		webService = new WebService();
 		
 		dependencies.add(jmxService);
 		dependencies.add(schedulerService);
 		dependencies.add(databaseService);
+		dependencies.add(webService);
 	}
 	
 	public void start() {
@@ -74,6 +78,10 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 						jmxService.getMBeanServer().registerMBean(this, objectName);
 					}
 				}
+				
+				status = ServiceMBean.STARTED;
+				
+				log.info(startBundle.getString("start.complete"));
 			} catch (Exception e) {
 				e.printStackTrace();
 				log.error(e.getMessage());
@@ -83,10 +91,6 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		} else {
 			log.warn(startBundle.getString("perpetuum.core.already.started"));
 		}
-		
-		status = ServiceMBean.STARTED;
-		
-		log.info(startBundle.getString("start.complete"));
 	}
 
 	public void stop() {
