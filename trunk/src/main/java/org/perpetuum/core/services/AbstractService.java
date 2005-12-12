@@ -13,8 +13,7 @@ public abstract class AbstractService implements Service {
 	public void prepare(String name) {
 		log = LogFactory.getLog(SchedulerService.class);
 		
-		CommandFinder finder = new CommandFinder(System
-				.getProperty("perpetuum.services.path"));
+		CommandFinder finder = new CommandFinder(System .getProperty("perpetuum.services.path"));
 
 		bundle = finder.doFindCommandBundle(name.toLowerCase());
 		

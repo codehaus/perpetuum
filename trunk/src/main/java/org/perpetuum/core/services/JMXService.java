@@ -15,7 +15,7 @@ import mx4j.log.Log4JLogger;
 public class JMXService extends AbstractService {
 	public static final String RMI_JNDI_NAME = "RMIConnector";
 	public static final String DOMAIN_NAME = "PerpetuumDomain";
-	public static final String NAME = "JMXServer";
+	public static final String NAME = "JMXService";
 	private MBeanServer mbs = null;
 	private ObjectName rmiRegistry = null;
 	private ObjectName httpAdaptor = null;
