@@ -26,12 +26,14 @@ public class Start {
 	private static JMXService jmxServer;
 	private static Log log = null;
 	private static boolean help = false;
+	private static CommandFinder finder = null;
+	private static CommandFinder sFinder = null;
 	
 	private Start() {
 		log = LogFactory.getLog(Start.class);
 		
-		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
-		CommandFinder sFinder = new CommandFinder(System.getProperty("perpetuum.services.path"));
+		finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
+		sFinder = new CommandFinder(System.getProperty("perpetuum.services.path"));
 		
 		bundle = finder.doFindCommandBundle("start");
 		sBundle = sFinder.doFindCommandBundle("jmxservice");
@@ -42,15 +44,19 @@ public class Start {
 	private void createOptions() {
 		Option httpport = new Option("h", "httpPort", true, bundle.getString("options.httpport.description"));
 		Option rmiport = new Option("r", "rmiPort", true, bundle.getString("options.rmiport.description"));
+		Option webport = new Option("w", "webPort", true, bundle.getString("options.webport.description"));
 		Option help = new Option("help", "help", false, bundle.getString("options.help.description"));
 		
 		httpport.setArgName("httpport");
 		httpport.setValueSeparator(' ');
 		rmiport.setArgName("rmiport");
 		rmiport.setValueSeparator(' ');
+		webport.setArgName("webport");
+		webport.setValueSeparator(' ');
 		
 		options.addOption(httpport);
 		options.addOption(rmiport);
+		options.addOption(webport);
 		options.addOption(help);
 	}
 	
@@ -73,6 +79,7 @@ public class Start {
 			
 			int httpPort = 0;
 			int rmiPort = 0;
+			int webPort = 0;
 			
 			log.info(bundle.getString("start.header"));
 			
@@ -88,10 +95,19 @@ public class Start {
 				log.warn(MessageFormat.format(bundle.getString("invalid.port"), new Object[] {line.getOptionValue("r"), "JMX RMI", sBundle.getString("default.rmiport")}));
 			}
 			
+			sBundle = sFinder.doFindCommandBundle("webservice");
+			
+			try {
+				webPort = Integer.parseInt(line.getOptionValue("w", sBundle.getString("default.webport")));
+			} catch (NumberFormatException nfe) {
+				log.warn(MessageFormat.format(bundle.getString("invalid.port"), new Object[] {line.getOptionValue("w"), "Web Server", sBundle.getString("default.webport")}));
+			}
+			
 			PerpetuumCore pc = new PerpetuumCore();
 			
 			pc.setHttpPort(httpPort);
 			pc.setRmiPort(rmiPort);
+			pc.setWebPort(webPort);
 			
 			pc.start();
 		}
