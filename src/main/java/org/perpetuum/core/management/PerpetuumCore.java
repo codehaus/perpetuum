@@ -26,6 +26,7 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	private WebService webService = null;
 	private int httpPort = 0;
 	private int rmiPort = 0;
+	private int webPort = 0;
 	private ResourceBundle startBundle = null;
 	private ResourceBundle stopBundle = null;
 	private LinkedList dependencies = null;
@@ -70,6 +71,8 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 					if (cS instanceof JMXService) {
 						jmxService.setHttpPort(httpPort);
 						jmxService.setRmiPort(rmiPort);
+					} else if (cS instanceof WebService) {
+						webService.setPort(webPort);
 					}
 					
 					cS.start();
@@ -134,5 +137,9 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	
 	public void setRmiPort(int rmiPort) {
 		this.rmiPort = rmiPort;
+	}
+	
+	public void setWebPort(int webPort) {
+		this.webPort = webPort;
 	}
 }
