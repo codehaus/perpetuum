@@ -13,11 +13,15 @@ public class SchedulerService extends AbstractService {
 	public SchedulerService() {
 		prepare(NAME);
 	}
+	
+	public void init() throws Exception {
+		sf = new StdSchedulerFactory();
+	}
 
 	public void start() throws Exception {
-		sf = new StdSchedulerFactory();
-
 		try {
+			init();
+			
 			s = sf.getScheduler();
 		} catch (SchedulerException e) {
 			throw e;

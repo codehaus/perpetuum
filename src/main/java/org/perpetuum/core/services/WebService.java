@@ -6,12 +6,22 @@ public class WebService extends AbstractService {
 	public WebService() {
 		prepare(NAME);
 	}
-
-	public void start() throws Exception {
+	
+	public void init() {
 		
 	}
 
+	public void start() throws Exception {
+		try {
+			init();
+			
+			log.info(bundle.getString("web.started"));
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
 	public void stop() {
-		
+		log.info(bundle.getString("web.stopped"));
 	}
 }

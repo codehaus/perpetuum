@@ -15,6 +15,11 @@ public interface Service {
 	public void prepare(String name);
 	
 	/**
+	 * All services should run some initialization code.
+	 */
+	public void init() throws Exception;
+	
+	/**
 	 * All services have to be able to be started
 	 */
 	public void start() throws Exception;
