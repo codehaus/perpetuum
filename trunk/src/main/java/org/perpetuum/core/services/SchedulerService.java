@@ -23,7 +23,7 @@ public class SchedulerService extends AbstractService {
 			throw e;
 		}
 		
-		log.info(startBundle.getString("scheduler.started"));
+		log.info(bundle.getString("scheduler.started"));
 	}
 	
 	public void stop() {
@@ -35,7 +35,7 @@ public class SchedulerService extends AbstractService {
 				log.error(e.getMessage());
 			}
 			
-			log.info(startBundle.getString("scheduler.stopped"));
+			log.info(bundle.getString("scheduler.stopped"));
 		}
 		
 		ServiceRegistry.getDefault().unRegister(NAME);

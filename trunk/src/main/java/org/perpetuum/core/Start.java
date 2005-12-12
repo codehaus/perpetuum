@@ -22,6 +22,7 @@ import org.perpetuum.core.services.JMXService;
 public class Start {
 	private static Options options = new Options();
 	private static ResourceBundle bundle;
+	private static ResourceBundle sBundle;
 	private static JMXService jmxServer;
 	private static Log log = null;
 	private static boolean help = false;
@@ -30,8 +31,10 @@ public class Start {
 		log = LogFactory.getLog(Start.class);
 		
 		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
+		CommandFinder sFinder = new CommandFinder(System.getProperty("perpetuum.services.path"));
 		
 		bundle = finder.doFindCommandBundle("start");
+		sBundle = sFinder.doFindCommandBundle("jmxservice");
 		
 		createOptions();
 	}
@@ -74,15 +77,15 @@ public class Start {
 			log.info(bundle.getString("start.header"));
 			
 			try {
-				httpPort = Integer.parseInt(line.getOptionValue("h", bundle.getString("default.httpport")));
+				httpPort = Integer.parseInt(line.getOptionValue("h", sBundle.getString("default.httpport")));
 			} catch (NumberFormatException nfe) {
-				log.warn(MessageFormat.format(bundle.getString("invalid.port"), new Object[] {line.getOptionValue("h"), "JMX HTTP", bundle.getString("default.httpport")}));
+				log.warn(MessageFormat.format(bundle.getString("invalid.port"), new Object[] {line.getOptionValue("h"), "JMX HTTP", sBundle.getString("default.httpport")}));
 			}
 			
 			try {
-				rmiPort = Integer.parseInt(line.getOptionValue("r", bundle.getString("default.rmiport")));
+				rmiPort = Integer.parseInt(line.getOptionValue("r", sBundle.getString("default.rmiport")));
 			} catch (NumberFormatException nfe) {
-				log.warn(MessageFormat.format(bundle.getString("invalid.port"), new Object[] {line.getOptionValue("r"), "JMX RMI", bundle.getString("default.rmiport")}));
+				log.warn(MessageFormat.format(bundle.getString("invalid.port"), new Object[] {line.getOptionValue("r"), "JMX RMI", sBundle.getString("default.rmiport")}));
 			}
 			
 			PerpetuumCore pc = new PerpetuumCore();

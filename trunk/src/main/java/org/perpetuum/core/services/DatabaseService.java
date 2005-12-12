@@ -107,7 +107,7 @@ public class DatabaseService extends AbstractService {
 				dbHome.mkdirs();
 			}
 			
-			log.info(startBundle.getString("database.home.found") + ": " + dbHome.getAbsolutePath());
+			log.info(bundle.getString("database.home.found") + ": " + dbHome.getAbsolutePath());
 		} catch (Exception e) {
 			throw e;
 		}
@@ -121,13 +121,13 @@ public class DatabaseService extends AbstractService {
 		try {
 			init();
 			
-			log.info(startBundle.getString("database.started"));
+			log.info(bundle.getString("database.started"));
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
 	public void stop() {
-		log.info(startBundle.getString("database.stopped"));
+		log.info(bundle.getString("database.stopped"));
 	}
 }
