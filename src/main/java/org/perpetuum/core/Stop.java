@@ -27,14 +27,17 @@ import org.perpetuum.core.services.JMXService;
 public class Stop {
 	private static Options options = new Options();
 	private static ResourceBundle bundle;
+	private static ResourceBundle sBundle;
 	private static Log log = null;
 	
 	public Stop() {
 		log = LogFactory.getLog(Stop.class);
 		
 		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
+		CommandFinder sFinder = new CommandFinder(System.getProperty("perpetuum.services.path"));
 		
 		bundle = finder.doFindCommandBundle("stop");
+		sBundle = sFinder.doFindCommandBundle("jmxservice");
 		
 		createOptions();
 	}
@@ -71,9 +74,9 @@ public class Stop {
 			int rmiPort = 0;
 			
 			try {
-				rmiPort = Integer.parseInt(line.getOptionValue("r", bundle.getString("default.rmiport")));
+				rmiPort = Integer.parseInt(line.getOptionValue("r", sBundle.getString("default.rmiport")));
 			} catch (NumberFormatException nfe) {
-				log.warn(MessageFormat.format(bundle.getString("invalid.port"), new Object[] {line.getOptionValue("r"), "JMX RMI", bundle.getString("default.rmiport")}));
+				log.warn(MessageFormat.format(bundle.getString("invalid.port"), new Object[] {line.getOptionValue("r"), "JMX RMI", sBundle.getString("default.rmiport")}));
 			}
 			
 			try {

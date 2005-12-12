@@ -38,15 +38,15 @@ public class JMXService extends AbstractService {
 		try {
 			initializeMBeanServer();
 			jmxStatus = Service.STARTED;
-			log.info(startBundle.getString("jmx.started"));
+			log.info(bundle.getString("jmx.started"));
 			
 			initializeRMIRegistry();
 			rmiStatus = Service.STARTED;
-			log.info(MessageFormat.format(startBundle.getString("jmx.rmi.started"), new Object[] { String.valueOf(rmiPort) }));
+			log.info(MessageFormat.format(bundle.getString("jmx.rmi.started"), new Object[] { String.valueOf(rmiPort) }));
 			
 			initializeHttpAdaptor();
 			httpStatus = Service.STARTED;
-			log.info(MessageFormat.format(startBundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
+			log.info(MessageFormat.format(bundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
 		} catch (Exception e) {
 			throw e;
 		}
@@ -86,14 +86,14 @@ public class JMXService extends AbstractService {
 			if (httpStatus.equals(Service.STARTED)) {
 				mbs.invoke(httpAdaptor, "stop", null, null);
 				mbs.unregisterMBean(httpAdaptor);
-				log.info(startBundle.getString("jmx.http.stopped"));
+				log.info(bundle.getString("jmx.http.stopped"));
 			}
 			
 			if (rmiStatus.equals(Service.STARTED)) {
 				connectorServer.stop();
 				mbs.invoke(rmiRegistry, "stop", null, null);
 				mbs.unregisterMBean(rmiRegistry);
-				log.info(startBundle.getString("jmx.rmi.stopped"));
+				log.info(bundle.getString("jmx.rmi.stopped"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,7 +102,7 @@ public class JMXService extends AbstractService {
 		
 		if (jmxStatus.equals(Service.STARTED)) {
 			MBeanServerFactory.releaseMBeanServer(mbs);
-			log.info(startBundle.getString("jmx.stopped"));
+			log.info(bundle.getString("jmx.stopped"));
 		}
 		
 		ServiceRegistry.getDefault().unRegister(NAME);
