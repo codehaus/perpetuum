@@ -24,7 +24,6 @@ public class JMXService extends AbstractService {
 	private int httpPort = 0;
 	private int rmiPort = 0;
 	private String rmiStatus = Service.STOPPED;
-	private String jmxStatus = Service.STOPPED;
 	private String httpStatus = Service.STOPPED;
 	
 	public JMXService() {
@@ -69,7 +68,7 @@ public class JMXService extends AbstractService {
 	public void initializeMBeanServer() throws Exception {
 		mbs = MBeanServerFactory.createMBeanServer(DOMAIN_NAME);
 		
-		jmxStatus = Service.STARTED;
+		status = Service.STARTED;
 		log.info(bundle.getString("jmx.started"));
 	}
 	
@@ -104,7 +103,7 @@ public class JMXService extends AbstractService {
 			log.error(e.getMessage());
 		}
 		
-		if (jmxStatus.equals(Service.STARTED)) {
+		if (status.equals(Service.STARTED)) {
 			MBeanServerFactory.releaseMBeanServer(mbs);
 			log.info(bundle.getString("jmx.stopped"));
 		}

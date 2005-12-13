@@ -122,12 +122,14 @@ public class DatabaseService extends AbstractService {
 			init();
 			
 			log.info(bundle.getString("database.started"));
+			status = Service.STARTED;
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
 	public void stop() {
+		status = Service.STOPPED;
 		log.info(bundle.getString("database.stopped"));
 	}
 }

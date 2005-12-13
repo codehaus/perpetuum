@@ -9,6 +9,7 @@ import org.perpetuum.command.CommandFinder;
 public abstract class AbstractService implements Service {
 	public Log log = null;
 	public ResourceBundle bundle = null;
+	public String status = Service.STOPPED;
 	
 	public void prepare(String name) {
 		log = LogFactory.getLog(SchedulerService.class);
