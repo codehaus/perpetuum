@@ -32,14 +32,20 @@ public class SchedulerService extends AbstractService {
 	
 	public void stop() {
 		if (s != null) {
-			try {
-				s.shutdown();
-			} catch (SchedulerException e) {
-				e.printStackTrace();
-				log.error(e.getMessage());
+			if (!status.equals(Service.STOPPED)) {
+				try {
+					s.shutdown();
+					
+					status = Service.STOPPED;
+					
+					log.info(bundle.getString("scheduler.stopped"));
+				} catch (SchedulerException e) {
+					e.printStackTrace();
+					log.error(e.getMessage());
+				}
+			} else {
+				log.info(bundle.getString("scheduler.already.stopped"));
 			}
-			
-			log.info(bundle.getString("scheduler.stopped"));
 		}
 		
 		ServiceRegistry.getDefault().unRegister(NAME);

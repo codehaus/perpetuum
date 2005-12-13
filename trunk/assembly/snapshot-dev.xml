@@ -22,6 +22,10 @@
             <outputDirectory>logs</outputDirectory>
         </fileSet>
         <fileSet>
+        	<directory>src/main/docroot</directory>
+        	<outputDirectory>docroot</outputDirectory>
+        </fileSet>
+        <fileSet>
             <directory>target</directory>
             <outputDirectory>lib</outputDirectory>
             <includes>
