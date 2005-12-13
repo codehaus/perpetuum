@@ -51,6 +51,8 @@ public class WebService extends AbstractService {
 			
 			log.info(MessageFormat.format(bundle.getString("web.started"), new Object[] { String.valueOf(port) }));
 		} catch (Exception e) {
+			stop();
+			
 			throw e;
 		}
 	}
