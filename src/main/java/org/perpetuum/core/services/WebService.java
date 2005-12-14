@@ -42,19 +42,13 @@ public class WebService extends AbstractService {
 	}
 
 	public void start() throws Exception {
-		try {
-			init();
-			
-			server.start();
-			
-			status = Service.STARTED;
-			
-			log.info(MessageFormat.format(bundle.getString("web.started"), new Object[] { String.valueOf(port) }));
-		} catch (Exception e) {
-			stop();
-			
-			throw e;
-		}
+		init();
+		
+		server.start();
+		
+		status = Service.STARTED;
+		
+		log.info(MessageFormat.format(bundle.getString("web.started"), new Object[] { String.valueOf(port) }));
 	}
 
 	public void stop() {

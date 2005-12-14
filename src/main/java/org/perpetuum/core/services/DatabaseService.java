@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -23,12 +22,8 @@ public class DatabaseService extends AbstractService {
 	}
 	
 	public void init() throws Exception {
-		try {
-			setDatabaseProperties();
-			initializeDatabase();
-		} catch (Exception e) {
-			throw e;
-		}
+		setDatabaseProperties();
+		initializeDatabase();
 	}
 	
 	public void initializeDatabase() throws Exception {
@@ -37,11 +32,7 @@ public class DatabaseService extends AbstractService {
 		dataSource.setCreateDatabase("create");
 		dataSource.setDatabaseName("perpetuum");
 		
-		try {
-			conn = dataSource.getConnection();
-		} catch (SQLException e) {
-			throw e;
-		}
+		conn = dataSource.getConnection();
 		
 		executeDDLIfNecessary();
 	}
@@ -101,16 +92,12 @@ public class DatabaseService extends AbstractService {
 		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
 		ResourceBundle pBundle = ResourceBundle.getBundle("perpetuum");
 		
-		try {
-			if (!dbHome.exists()) {
-				log.info(pBundle.getString("create.dir") + " " + dbHome.getAbsolutePath());
-				dbHome.mkdirs();
-			}
-			
-			log.info(bundle.getString("database.home.found") + ": " + dbHome.getAbsolutePath());
-		} catch (Exception e) {
-			throw e;
+		if (!dbHome.exists()) {
+			log.info(pBundle.getString("create.dir") + " " + dbHome.getAbsolutePath());
+			dbHome.mkdirs();
 		}
+		
+		log.info(bundle.getString("database.home.found") + ": " + dbHome.getAbsolutePath());
 		
 		if (System.getProperty("derby.stream.error.file") == null) {
 			System.setProperty("derby.stream.error.file", System.getProperty("perpetuum.logs.home") + File.separator + "derby.log");
@@ -118,14 +105,10 @@ public class DatabaseService extends AbstractService {
 	}
 
 	public void start() throws Exception {
-		try {
-			init();
-			
-			log.info(bundle.getString("database.started"));
-			status = Service.STARTED;
-		} catch (Exception e) {
-			throw e;
-		}
+		init();
+		
+		log.info(bundle.getString("database.started"));
+		status = Service.STARTED;
 	}
 
 	public void stop() {

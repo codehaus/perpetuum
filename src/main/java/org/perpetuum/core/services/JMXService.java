@@ -40,19 +40,15 @@ public class JMXService extends AbstractService {
 	}
 	
 	public void start() throws Exception {
-		try {
-			init();
-			
-			connectorServer.start();
-			rmiStatus = Service.STARTED;
-			log.info(MessageFormat.format(bundle.getString("jmx.rmi.started"), new Object[] { String.valueOf(rmiPort) }));
-			
-			mbs.invoke(httpAdaptor, "start", null, null);
-			httpStatus = Service.STARTED;
-			log.info(MessageFormat.format(bundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
-		} catch (Exception e) {
-			throw e;
-		}
+		init();
+		
+		connectorServer.start();
+		rmiStatus = Service.STARTED;
+		log.info(MessageFormat.format(bundle.getString("jmx.rmi.started"), new Object[] { String.valueOf(rmiPort) }));
+		
+		mbs.invoke(httpAdaptor, "start", null, null);
+		httpStatus = Service.STARTED;
+		log.info(MessageFormat.format(bundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
 	}
 	
 	public void initializeRMIRegistry() throws Exception {
