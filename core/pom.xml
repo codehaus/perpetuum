@@ -3,12 +3,17 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>perpetuum</groupId>
-    <artifactId>perpetuum</artifactId>
+    <artifactId>core</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
-    <name>Perpetuum</name>
+    <version>1.0-ALPHA</version>
+    <name>Perpetuum Core</name>
     <description>Continuous Integration Suite</description>
     <url>http://perpetuum.codehaus.org</url>
+    <parent>
+        <groupId>perpetuum</groupId>
+        <artifactId>perpetuum</artifactId>
+        <version>1.0-ALPHA</version>
+    </parent>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
