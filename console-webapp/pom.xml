@@ -14,4 +14,11 @@
         <artifactId>perpetuum</artifactId>
         <version>1.0-ALPHA</version>
     </parent>
+    <dependencies>
+        <dependency>
+            <groupId>perpetuum</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0-ALPHA</version>
+        </dependency>
+    </dependencies>
 </project>
