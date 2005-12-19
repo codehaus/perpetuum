@@ -3,9 +3,9 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>perpetuum</groupId>
-    <artifactId>console-webapp</artifactId>
+    <artifactId>perpetuum-console-webapp</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-ALPHA</version>
+    <version>1.0</version>
     <name>Perpetuum Console Web-App</name>
     <description>Continuous Integration Suite</description>
     <url>http://perpetuum.codehaus.org</url>
@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>perpetuum</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>perpetuum-core</artifactId>
             <version>1.0-ALPHA</version>
         </dependency>
     </dependencies>
