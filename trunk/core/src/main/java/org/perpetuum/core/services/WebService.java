@@ -46,6 +46,7 @@ public class WebService extends AbstractService {
 		// System.setProperty("perpetuum.webapps.home",System.getProperty("perpetuum.home") + File.separator + "docroot" + File.separator + "webapps");
 		
 		initConsole();
+		server.setStopAtShutdown(true);
 	}
 	
 	public void initConsole() throws Exception {
