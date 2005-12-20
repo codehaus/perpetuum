@@ -7,7 +7,6 @@ import org.mortbay.http.HttpContext;
 import org.mortbay.http.SocketListener;
 import org.mortbay.http.handler.ResourceHandler;
 import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.WebApplicationContext;
 
 public class WebService extends AbstractService {
 	private static final String NAME = "WebService";
@@ -16,7 +15,6 @@ public class WebService extends AbstractService {
 	private SocketListener listener = null;
 	private HttpContext rootContext = null;
 	private ResourceHandler resourceHandler = null;
-	private WebApplicationContext console = null;
 	
 	public WebService() {
 		prepare(NAME);
