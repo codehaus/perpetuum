@@ -12,13 +12,13 @@
     <parent>
         <groupId>perpetuum</groupId>
         <artifactId>perpetuum</artifactId>
-        <version>1.0-ALPHA</version>
+        <version>1.0</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>perpetuum</groupId>
             <artifactId>perpetuum-core</artifactId>
-            <version>1.0-ALPHA</version>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 </project>

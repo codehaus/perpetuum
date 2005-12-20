@@ -7,6 +7,7 @@ import org.mortbay.http.HttpContext;
 import org.mortbay.http.SocketListener;
 import org.mortbay.http.handler.ResourceHandler;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.servlet.WebApplicationContext;
 
 public class WebService extends AbstractService {
 	private static final String NAME = "WebService";
@@ -15,6 +16,7 @@ public class WebService extends AbstractService {
 	private SocketListener listener = null;
 	private HttpContext rootContext = null;
 	private ResourceHandler resourceHandler = null;
+	private WebApplicationContext console = null;
 	
 	public WebService() {
 		prepare(NAME);
@@ -34,11 +36,20 @@ public class WebService extends AbstractService {
 		
 		rootContext = new HttpContext();
 		
+		rootContext.setClassLoaderJava2Compliant(true);
 		rootContext.setContextPath("/");
 		rootContext.setResourceBase(System.getProperty("perpetuum.home") + File.separator + "docroot");
 		rootContext.addHandler(resourceHandler);
 		
 		server.addContext(rootContext);
+		
+		// System.setProperty("perpetuum.webapps.home",System.getProperty("perpetuum.home") + File.separator + "docroot" + File.separator + "webapps");
+		
+		initConsole();
+	}
+	
+	public void initConsole() throws Exception {
+		
 	}
 
 	public void start() throws Exception {

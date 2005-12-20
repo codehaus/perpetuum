@@ -1,0 +1,51 @@
+<assembly>
+    <id>SNAPSHOT</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>core/src/main/bin</directory>
+            <outputDirectory>bin</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>core/src/main/conf</directory>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>core/src/main/lib</directory>
+            <outputDirectory>lib</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>core/src/main/logs</directory>
+            <outputDirectory>logs</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>core/src/main/docroot</directory>
+            <outputDirectory>docroot</outputDirectory>
+        </fileSet>
+        <!-- <fileSet>
+            <directory>console-webapp/src/main/console</directory>
+            <outputDirectory>docroot/webapps/console</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>console-webapp/target/classes</directory>
+            <outputDirectory>docroot/webapps/console/WEB-INF/classes</outputDirectory>
+        </fileSet> -->
+        <fileSet>
+            <directory>core/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+</assembly>
