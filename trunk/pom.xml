@@ -86,6 +86,12 @@
             <version>2.5-6.0.0beta6</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>jetty</groupId>
+            <artifactId>jasper-runtime</artifactId>
+            <version>4.2.20RC0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
