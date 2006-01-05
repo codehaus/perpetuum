@@ -42,7 +42,7 @@ public class DatabaseService extends AbstractService {
 		dataSource = new EmbeddedDataSource();
 		
 		dataSource.setCreateDatabase("create");
-		dataSource.setDatabaseName("perpetuum");
+		dataSource.setDatabaseName("PERPETUUM");
 		
 		conn = dataSource.getConnection();
 		
