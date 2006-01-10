@@ -24,6 +24,7 @@ public class SchedulerService extends AbstractService {
 		s = sf.getScheduler();
 		
 		log.info(bundle.getString("scheduler.started"));
+		status = Service.STARTED;
 	}
 	
 	public void stop() {

@@ -8,14 +8,17 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import org.apache.derby.jdbc.EmbeddedDataSource;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 import org.perpetuum.command.CommandFinder;
 
 public class DatabaseService extends AbstractService {
 	public static final String NAME = "DatabaseService";
 	private final String DATABASE_HOME = System.getProperty("perpetuum.home") + File.separator + "data";
-	private EmbeddedDataSource dataSource = null;
+	private final String DATABASE_NAME = "PERPETUUM";
 	private Connection conn = null;
+	private Configuration cfg = null;
+	private SessionFactory sf = null;
 	
 	public DatabaseService() {
 		prepare(NAME);
@@ -23,23 +26,20 @@ public class DatabaseService extends AbstractService {
 	
 	public void init() throws Exception {
 		setDatabaseProperties();
-		initializeDatabase();
+		initializeORM();
 	}
 	
-	public void initializeDatabase() throws Exception {
-		dataSource = new EmbeddedDataSource();
+	public void initializeORM() throws Exception {
+		cfg = new Configuration();
 		
-		dataSource.setCreateDatabase("create");
-		dataSource.setDatabaseName("PERPETUUM");
+		cfg.setProperty("hibernate.dialect", "org.hibernate.dialect.DerbyDialect");
+		cfg.setProperty("hibernate.connection.url", "jdbc:derby:" + DATABASE_NAME + ";create=true");
+		cfg.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
+		cfg.setProperty("hibernate.hbm2ddl.auto", "update");
 		
-		conn = dataSource.getConnection();
+		cfg.addResource("META-INF/perpetuum/mapping/mapping.conf");
 		
-		executeDDLIfNecessary();
-	}
-	
-	public void executeDDLIfNecessary() {
-		// This will probably be replaced with Hibernate initialization 
-		// and Hibernate Schema/DDL generation.
+		sf = cfg.buildSessionFactory();
 	}
 	
 	public void setDatabaseProperties() throws Exception {
@@ -112,6 +112,8 @@ public class DatabaseService extends AbstractService {
 	}
 
 	public void stop() {
+		sf.close();
+		
 		status = Service.STOPPED;
 		log.info(bundle.getString("database.stopped"));
 	}
