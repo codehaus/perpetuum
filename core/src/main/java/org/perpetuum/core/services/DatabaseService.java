@@ -29,6 +29,10 @@ public class DatabaseService extends AbstractService {
 		initializeORM();
 	}
 	
+	public SessionFactory getSessionFactory() {
+		return sf;
+	}
+	
 	public void initializeORM() throws Exception {
 		cfg = new Configuration();
 		
@@ -36,7 +40,7 @@ public class DatabaseService extends AbstractService {
 		cfg.setProperty("hibernate.connection.url", "jdbc:derby:" + DATABASE_NAME + ";create=true");
 		cfg.setProperty("hibernate.connection.driver_class", "org.apache.derby.jdbc.EmbeddedDriver");
 		cfg.setProperty("hibernate.hbm2ddl.auto", "update");
-    // cfg.setProperty("hibernate.show_sql", "true");
+		// cfg.setProperty("hibernate.show_sql", "true");
 		
 		cfg.addResource("META-INF/perpetuum/mapping/mapping.conf");
 		

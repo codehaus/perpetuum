@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.JarURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.MissingResourceException;
@@ -14,7 +13,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.log4j.xml.DOMConfigurator;
-import org.perpetuum.classpath.SystemClassPath;
+import org.perpetuum.classpath.ClasspathUtils;
 import org.perpetuum.command.CommandFinder;
 
 /**
@@ -23,8 +22,8 @@ import org.perpetuum.command.CommandFinder;
  */
 public class Main {
 	private static CommandFinder finder = null;
-	private static final String COMMANDS_PATH = "META-INF/perpetuum/commands/";
-	private static final String SERVICES_PATH = "META-INF/perpetuum/services/";
+	public static final String COMMANDS_PATH = "META-INF/perpetuum/commands/";
+	public static final String SERVICES_PATH = "META-INF/perpetuum/services/";
 	private static ResourceBundle pBundle = null;
 	private static ResourceBundle cBundle = null;
 	
@@ -35,50 +34,9 @@ public class Main {
 		finder = new CommandFinder(COMMANDS_PATH);
 		pBundle = ResourceBundle.getBundle("perpetuum");
 		
-		setupClasspath();
+		ClasspathUtils.getInstance().setupClasspath();
 	}
-	
-	public static void setupClasspath() {
-		ClassLoader current = Thread.currentThread().getContextClassLoader();
-		URL classURL = Thread.currentThread().getContextClassLoader().getResource(COMMANDS_PATH + "start.properties");
-        String propsString = classURL.getFile();
-        URL jarURL = null;
-        File jarFile = null;
-        
-        if (System.getProperty("perpetuum.home") == null) {
-        	propsString = propsString.substring(0, propsString.indexOf("!"));
-            
-            try {
-    			jarURL = new URL(propsString);
-    		} catch (MalformedURLException e) {
-    			e.printStackTrace();
-    		}
-            jarFile = new File(jarURL.getFile());
-            
-            if (jarFile.getName().equals(pBundle.getString("jar.name"))) {
-            	File lib = jarFile.getParentFile();
-            	File home = lib.getParentFile();
-            	
-            	System.setProperty("perpetuum.home", home.getAbsolutePath());
-            }
-        }
 		
-		File lib = new File(System.getProperty("perpetuum.home") + 
-				File.separator + "lib");
-		File ext = new File(System.getProperty("perpetuum.home") + 
-				File.separator + "lib" + File.separator + "ext");
-		SystemClassPath systemCP = new SystemClassPath();
-		
-		try {
-			systemCP.addJarsToPath(lib);
-			
-			systemCP.addJarsToPath(ext);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	
 	public static void main(String[] args) {
 		init();
 		
