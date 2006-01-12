@@ -1,0 +1,11 @@
+<ivy-module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://jayasoft.org/ivy/ivy.xsd" version="1.0">
+    <info organisation="perpetuum" module="console-webapp" revision="1.0">
+    	<ivyauthor name="Jeremy Whitlock" url="http://docs.codehaus.org/display/~jcscoobyrs" />
+    	<repository name="ibiblio" url="http://www.ibiblio.org/maven2" />
+    	<description homepage="http://perpetuum.codehaus.org">This is the Perpetuum console-webapp module</description>
+    </info>
+    <dependencies>
+    	<dependency name="core" rev="latest.revision" />
+    </dependencies>
+</ivy-module>
