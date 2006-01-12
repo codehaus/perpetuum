@@ -1,4 +1,4 @@
-<project name="perpetuum" default="dev" basedir=".">
+<project xmlns:ivy="antlib:fr.jayasoft.ivy.ant" name="perpetuum" default="dev" basedir=".">
 	<description>This is the build file for Perpetuum</description>
 	
 	<property name="core.home" value="${basedir}/core" />
@@ -26,6 +26,10 @@
 		<mkdir dir="${core.test.bin}" />
 		<mkdir dir="${console-webapp.main.bin}" />
 		<mkdir dir="${console-webapp.test.bin}" />
+		
+		<ivy:configure file="${basedir}/conf/ivyconf.xml" />
+		<ivy:resolve />
+		<ivy:retrieve />
 	</target>
 	
 	<target name="dev" description="Creates a developer build" depends="init,compile-all">
