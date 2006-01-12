@@ -28,7 +28,7 @@
 		<mkdir dir="${console-webapp.test.bin}" />
 		
 		<ivy:configure file="${basedir}/conf/ivyconf.xml" />
-		<ivy:resolve />
+		<ivy:resolve file="${basedir}/conf/ivy.xml" />
 		<ivy:retrieve />
 	</target>
 	
