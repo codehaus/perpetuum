@@ -6,12 +6,11 @@ import org.quartz.SchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
 
 public class SchedulerService extends AbstractService {
-	public static final String NAME = "SchedulerService";
 	private SchedulerFactory sf = null;
 	private Scheduler s = null;
 
 	public SchedulerService() {
-		prepare(NAME);
+		prepare(SchedulerService.class);
 	}
 	
 	public void init() throws Exception {

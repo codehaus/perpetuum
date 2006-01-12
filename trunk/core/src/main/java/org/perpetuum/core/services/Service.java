@@ -12,7 +12,7 @@ public interface Service {
 	/**
 	 * All services have to be prepared so that they are ready to be used
 	 */
-	public void prepare(String name);
+	public void prepare(Class clazz);
 	
 	/**
 	 * All services should run some initialization code.

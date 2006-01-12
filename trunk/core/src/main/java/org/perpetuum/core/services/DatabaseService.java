@@ -13,7 +13,6 @@ import org.hibernate.cfg.Configuration;
 import org.perpetuum.command.CommandFinder;
 
 public class DatabaseService extends AbstractService {
-	public static final String NAME = "DatabaseService";
 	private final String DATABASE_HOME = System.getProperty("perpetuum.home") + File.separator + "data";
 	private final String DATABASE_NAME = "PERPETUUM";
 	private Connection conn = null;
@@ -21,7 +20,7 @@ public class DatabaseService extends AbstractService {
 	private SessionFactory sf = null;
 	
 	public DatabaseService() {
-		prepare(NAME);
+		prepare(DatabaseService.class);
 	}
 	
 	public void init() throws Exception {
