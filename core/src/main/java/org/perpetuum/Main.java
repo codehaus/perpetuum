@@ -13,8 +13,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.apache.log4j.xml.DOMConfigurator;
-import org.perpetuum.classpath.ClasspathUtils;
 import org.perpetuum.command.CommandFinder;
+import org.perpetuum.utils.PerpetuumUtils;
 
 /**
  * Entry point for Perpetuum.  This class will parse the command line arguments 
@@ -34,7 +34,7 @@ public class Main {
 		finder = new CommandFinder(COMMANDS_PATH);
 		pBundle = ResourceBundle.getBundle("perpetuum");
 		
-		ClasspathUtils.getInstance().setupClasspath();
+		PerpetuumUtils.getInstance().prepareSystem();
 	}
 		
 	public static void main(String[] args) {
