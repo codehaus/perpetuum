@@ -22,7 +22,7 @@ public class CommandFinder {
         Properties p = null;
         
         try {
-        	String uri = path + key;
+        	String uri = path + key + ".properties";
             
             // lets try the thread context class loader first
             InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(uri);
@@ -56,7 +56,15 @@ public class CommandFinder {
     }
     
     public ResourceBundle doFindCommandBundle(String key) {
-        return ResourceBundle.getBundle(path.replaceAll("/", ".") + key);
+    	ResourceBundle bundle = null;
+    	
+    	try {
+    		bundle = ResourceBundle.getBundle(path.replaceAll("/", ".") + key);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+        return bundle;
     }
     
     public Enumeration doFindCommands() throws IOException {
