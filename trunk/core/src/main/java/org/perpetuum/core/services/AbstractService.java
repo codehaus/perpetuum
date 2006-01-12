@@ -13,11 +13,11 @@ public abstract class AbstractService implements Service {
 	public static String NAME;
 	
 	public void prepare(Class clazz) {
-		NAME = clazz.getName().substring(clazz.getName().lastIndexOf("."));
+		NAME = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1);
 		
 		log = LogFactory.getLog(clazz);
 		
-		CommandFinder finder = new CommandFinder(System .getProperty("perpetuum.services.path"));
+		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.services.path"));
 
 		bundle = finder.doFindCommandBundle(NAME.toLowerCase());
 		

@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.perpetuum.command.CommandFinder;
 import org.perpetuum.core.management.PerpetuumCore;
 import org.perpetuum.core.services.JMXService;
+import org.perpetuum.utils.PerpetuumUtils;
 
 /**
  * Entry point to start the Perpetuum Server
@@ -31,6 +32,10 @@ public class Start {
 	
 	private Start() {
 		log = LogFactory.getLog(Start.class);
+		
+		if (System.getProperty("perpetuum.home") == null) {
+			PerpetuumUtils.getInstance().prepareSystem();
+		}
 		
 		finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
 		sFinder = new CommandFinder(System.getProperty("perpetuum.services.path"));
