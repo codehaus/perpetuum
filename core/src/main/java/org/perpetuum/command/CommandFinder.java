@@ -18,32 +18,41 @@ public class CommandFinder {
 		this.path = path;
 	}
 	
-    public Properties doFindCommandProperies(String key) throws IOException {
-        String uri = path + key;
+    public Properties doFindCommandProperies(String key) {
+        Properties p = null;
         
-        // lets try the thread context class loader first
-        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(uri);
-        if (in == null) {
-            in = CommandFinder.class.getClassLoader().getResourceAsStream(uri);
-            if (in == null) {
-                throw new IOException("Could not find command in : " + uri);
-            }
-        }
-
-        // lets load the file
-        BufferedInputStream reader = null;
         try {
-            reader = new BufferedInputStream(in);
-            Properties properties = new Properties();
-            properties.load(reader);
+        	String uri = path + key;
             
-            return properties;
-        } finally {
-            try {
-                reader.close();
-            } catch (Exception e) {
+            // lets try the thread context class loader first
+            InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(uri);
+            if (in == null) {
+                in = CommandFinder.class.getClassLoader().getResourceAsStream(uri);
+                if (in == null) {
+                    throw new IOException("Could not find command in : " + uri);
+                }
             }
+
+            // lets load the file
+            BufferedInputStream reader = null;
+            try {
+                reader = new BufferedInputStream(in);
+                Properties properties = new Properties();
+                properties.load(reader);
+                
+                p = properties;
+            } finally {
+                try {
+                    reader.close();
+                } catch (Exception e) {
+                	e.printStackTrace();
+                }
+            }
+        } catch (IOException ioe) {
+        	ioe.printStackTrace();
         }
+        
+        return p;
     }
     
     public ResourceBundle doFindCommandBundle(String key) {

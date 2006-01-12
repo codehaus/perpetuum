@@ -9,7 +9,6 @@ import org.mortbay.http.handler.ResourceHandler;
 import org.mortbay.jetty.Server;
 
 public class WebService extends AbstractService {
-	private static final String NAME = "WebService";
 	private int port = 0;
 	private Server server = null;
 	private SocketListener listener = null;
@@ -17,7 +16,7 @@ public class WebService extends AbstractService {
 	private ResourceHandler resourceHandler = null;
 	
 	public WebService() {
-		prepare(NAME);
+		prepare(WebService.class);
 	}
 	
 	public void init() throws Exception {

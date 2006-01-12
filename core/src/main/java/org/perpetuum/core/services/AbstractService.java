@@ -10,15 +10,18 @@ public abstract class AbstractService implements Service {
 	public Log log = null;
 	public ResourceBundle bundle = null;
 	public String status = Service.STOPPED;
+	public static String NAME;
 	
-	public void prepare(String name) {
-		log = LogFactory.getLog(SchedulerService.class);
+	public void prepare(Class clazz) {
+		NAME = clazz.getName().substring(clazz.getName().lastIndexOf("."));
+		
+		log = LogFactory.getLog(clazz);
 		
 		CommandFinder finder = new CommandFinder(System .getProperty("perpetuum.services.path"));
 
-		bundle = finder.doFindCommandBundle(name.toLowerCase());
+		bundle = finder.doFindCommandBundle(NAME.toLowerCase());
 		
-		ServiceRegistry.getDefault().register(name, this);
+		ServiceRegistry.getDefault().register(NAME, this);
 	}
 	
 	public abstract void init() throws Exception;
