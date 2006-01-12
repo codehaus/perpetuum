@@ -17,8 +17,6 @@ public class PerpetuumUtils {
 	}
 	
 	public void prepareSystem() {
-		ClasspathUtils.getInstance().setupClasspath();
-		
 		if (System.getProperty("perpetuum.commands.path") == null) {
 			System.setProperty("perpetuum.commands.path", Main.COMMANDS_PATH);
 		}
@@ -26,5 +24,7 @@ public class PerpetuumUtils {
 		if (System.getProperty("perpetuum.services.path") == null) {
 			System.setProperty("perpetuum.services.path", Main.SERVICES_PATH);
 		}
+		
+		ClasspathUtils.getInstance().setupClasspath();
 	}
 }

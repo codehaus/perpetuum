@@ -20,7 +20,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.perpetuum.command.CommandFinder;
 import org.perpetuum.core.services.JMXService;
-import org.perpetuum.utils.PerpetuumUtils;
 
 /**
  * Entry point to stop the Perpetuum Server
@@ -33,10 +32,6 @@ public class Stop {
 	
 	public Stop() {
 		log = LogFactory.getLog(Stop.class);
-		
-		if (System.getProperty("perpetuum.home") == null) {
-			PerpetuumUtils.getInstance().prepareSystem();
-		}
 		
 		CommandFinder finder = new CommandFinder(System.getProperty("perpetuum.commands.path"));
 		CommandFinder sFinder = new CommandFinder(System.getProperty("perpetuum.services.path"));
