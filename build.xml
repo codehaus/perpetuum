@@ -1,6 +1,7 @@
 <project name="perpetuum" default="dev" basedir=".">
 	<description>This is the build file for Perpetuum</description>
 	
+	<!-- Source and Resource Directories -->
 	<property name="core.home" value="${basedir}/core" />
 	<property name="core.main.src" value="${core.home}/src/main/java" />
 	<property name="core.main.bin" value="${core.home}/bin/main" />
@@ -15,6 +16,10 @@
 	<property name="console-webapp.test.src" value="${console-webapp.home}/src/test/java" />
 	<property name="console-webapp.test.bin" value="${console-webapp.home}/bin/test" />
 	<property name="console-webapp.test.resources" value="${console-webapp.home}/src/test/resources" />
+	
+	<!-- Library Locations -->
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="build.lib.dir" value="${lib.dir}/build" />
 	
 	<target name="clean" description="Cleans all artifacts created during any build.">
 		<delete dir="${core.home}/bin" />
