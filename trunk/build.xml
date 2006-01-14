@@ -1,5 +1,9 @@
-<project name="perpetuum" default="dev" basedir=".">
+<project name="perpetuum" default="integration" basedir=".">
 	<description>This is the build file for Perpetuum</description>
+	
+	<!-- Perpetuum Properties -->
+	<property name="app.name" value="perpetuum" />
+	<property name="app.ver" value="1.0" />
 	
 	<!-- Source and Resource Directories -->
 	<property name="core.home" value="${basedir}/core" />
@@ -21,40 +25,124 @@
 	<property name="lib.dir" value="${basedir}/lib" />
 	<property name="build.lib.dir" value="${lib.dir}/build" />
 	
+	<!-- Distribution Directories -->
+	<property name="dist.home" value="${basedir}/dist" />
+	
+	<!-- Paths -->
+	<path id="deploy.libs">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<path id="build.libs">
+		<fileset dir="${build.lib.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<path id="core.build.path">
+		<pathelement location="${core.main.bin}" />
+		<path refid="deploy.libs" />
+	</path>
+	
+	<path id="core.test.path">
+		<path refid="core.build.path" />
+		<path refid="build.libs" />
+		<pathelement location="${core.test.bin}" />
+	</path>
+	
+	<path id="console-webapp.build.path">
+		<pathelement location="${console-webapp.main.bin}" />
+		<path refid="deploy.libs" />
+	</path>
+	
+	<path id="console-webapp.test.path">
+		<pathelement location="${console-webapp.test.bin}" />
+		<path refid="deploy.libs" />
+		<path refid="build.libs" />
+	</path>
+	
 	<target name="clean" description="Cleans all artifacts created during any build.">
+		<delete dir="${dist.home}" />
 		<delete dir="${core.home}/bin" />
 		<delete dir="${console-webapp.home}/bin" />
+		<delete>
+			<fileset dir="${basedir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+		</delete>
 	</target>
-	
+		
 	<target name="init" description="Used to prepare for all targets">
+		<mkdir dir="${dist.home}/${app.name}-${app.ver}" />
 		<mkdir dir="${core.main.bin}" />
 		<mkdir dir="${core.test.bin}" />
 		<mkdir dir="${console-webapp.main.bin}" />
 		<mkdir dir="${console-webapp.test.bin}" />
 	</target>
 	
-	<target name="dev" description="Creates a developer build" depends="init,compile-all">
-		
+	<target name="integration" description="Runs a developer build" depends="init,compile-all,test-all">
+		<echo message="Building and testing this iteration complete..." />
 	</target>
 	
-	<target name="compile-all" description="Compiles all modules and tests" 
-		depends="compile-core,compile-core-tests,compile-console-webapp,compile-console-webapp-tests">
-	
+	<target name="compile-all" description="Compiles all modules and tests" depends="init,compile-core,compile-core-tests,compile-console-webapp,compile-console-webapp-tests">
+		<echo message="Compiling Perpetuum complete..." />
 	</target>
 	
 	<target name="compile-core" description="Compiles the core without tests" depends="init">
-		
+		<javac classpathref="core.test.path" destdir="${core.main.bin}" srcdir="${core.main.src}" 
+			includes="**/*.java" fork="yes" />
+		<echo message="Compiling Perpetuum core complete..." />
 	</target>
 	
 	<target name="compile-core-tests" description="Compiles the core's tests only" depends="init">
-		
+		<javac classpathref="core.test.path" destdir="${core.test.bin}" srcdir="${core.test.src}" 
+			includes="**/*.java" fork="yes" />
+		<echo message="Compiling Perpetuum core tests complete..." />
 	</target>
 	
 	<target name="compile-console-webapp" description="Compiles the console-webapp without tests" depends="init">
-		
+		<echo message="&lt;!-- Nothing to compile yet --&gt;" />
 	</target>
 	
 	<target name="compile-console-webapp-tests" description="Compiles the console-webapp's tests only" depends="init">
+		<echo message="&lt;!-- Nothing to compile yet --&gt;" />
+	</target>
+	
+	<target name="stage-test" description="Creates a stage environment for testing">
+		<copy todir="${core.main.bin}">
+			<fileset dir="${core.main.resources}">
+				<include name="META-INF/**" />
+				<include name="*.properties" />
+			</fileset>
+			<fileset dir="${core.home}/src/main/conf">
+				<include name="*.conf" />
+			</fileset>
+		</copy>
 		
+		<echo message="Staging test environment complete..." />
+	</target>
+	
+	<target name="test-all" description="Runs all tests for Perpetuum" depends="init,compile-all,stage-test,test-core,test-console-webapp">
+		<fail if="core.test.fail" message="One or more Perpetuum tests failed." />
+		
+		<echo message="Done testing Perpetuum" />
+	</target>
+	
+	<target name="test-core" description="Runs all tests for Perpetuum" depends="init,compile-core">
+		<junit dir="${core.test.bin}" printsummary="yes" fork="yes">
+			<classpath refid="core.test.path" />
+			<test name="org.perpetuum.command.AllTests" haltonerror="no" 
+				haltonfailure="no" failureproperty="core.test.fail">
+				<formatter type="xml"/>
+			</test>
+		</junit>
+		
+		<echo message="Done testing Perpetuum core" />
+	</target>
+	
+	<target name="test-console-webapp" description="Runs all tests for Perpetuum console-webapp" depends="init,compile-console-webapp">
+		<echo message="&lt;!-- Nothing to test yet --&gt;" />
 	</target>
 </project>
