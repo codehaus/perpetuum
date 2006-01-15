@@ -31,20 +31,24 @@ public class ClasspathUtils {
         File jarFile = null;
         
         if (System.getProperty("perpetuum.home") == null) {
-        	propsString = propsString.substring(0, propsString.indexOf("!"));
-            
-            try {
-    			jarURL = new URL(propsString);
-    		} catch (MalformedURLException e) {
-    			e.printStackTrace();
-    		}
-            jarFile = new File(jarURL.getFile());
-            
-            if (jarFile.getName().equals(pBundle.getString("jar.name"))) {
-            	File lib = jarFile.getParentFile();
-            	File home = lib.getParentFile();
-            	
-            	System.setProperty("perpetuum.home", home.getAbsolutePath());
+            if (propsString.indexOf("!") > -1) {
+                propsString = propsString.substring(0, propsString.indexOf("!"));
+                
+                try {
+                    jarURL = new URL(propsString);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                jarFile = new File(jarURL.getFile());
+                
+                if (jarFile.getName().equals(pBundle.getString("jar.name"))) {
+                    File lib = jarFile.getParentFile();
+                    File home = lib.getParentFile();
+                    
+                    System.setProperty("perpetuum.home", home.getAbsolutePath());
+                }
+            } else {
+                System.setProperty("perpetuum.home", System.getProperty("user.dir"));
             }
         }
 		

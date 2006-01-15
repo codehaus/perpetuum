@@ -133,22 +133,37 @@ public class Main {
 			if (commandHomes != null) {
 				for (; commandHomes.hasMoreElements(); ) {
 					URL cHomeURL = (URL)commandHomes.nextElement();
-					JarURLConnection conn = (JarURLConnection)cHomeURL.openConnection();
-			        JarFile jarfile = conn.getJarFile();
-			        Enumeration commands = jarfile.entries();
-			        
-			        if (commands != null) {
-			        	while (commands.hasMoreElements()) {
-			        		JarEntry je = (JarEntry)commands.nextElement();
-				        	
-				        	if (je.getName().indexOf(COMMANDS_PATH) > -1 && !je.getName().equals(COMMANDS_PATH)) {
-				        		String command = je.getName().substring(je.getName().lastIndexOf("/") + 1);
-				        		ResourceBundle bundle = finder.doFindCommandBundle(command.substring(0, command.indexOf(".")));
-				        		 
-								System.out.println("\n  " + bundle.getString("name") + " - " + bundle.getString("description"));
-				        	}
-			        	}
-			        }
+					File cHomeFile = new File(cHomeURL.getFile());
+                    
+                     if (cHomeFile.isDirectory()) {
+                         File[] commands = cHomeFile.listFiles();
+                         
+                         for (int i = 0; i < commands.length; i++) {
+                             File cC = commands[i];
+                             
+                             if (cC.isFile() && cC.getName().endsWith(".properties")) {
+                                 String command = cC.getName();
+                                 ResourceBundle bundle = finder.doFindCommandBundle(command.substring(0, command.indexOf("."))); 
+                                 System.out.println("\n  " + bundle.getString("name") + " - " + bundle.getString("description"));
+                             }
+                         }
+                     } else {
+                         JarURLConnection conn = (JarURLConnection)cHomeURL.openConnection();
+                        JarFile jarfile = conn.getJarFile();
+                        Enumeration commands = jarfile.entries();
+                        
+                        if (commands != null) {
+                            while (commands.hasMoreElements()) {
+                                JarEntry je = (JarEntry)commands.nextElement();
+                                
+                                if (je.getName().indexOf(COMMANDS_PATH) > -1 && !je.getName().equals(COMMANDS_PATH)) {
+                                    String command = je.getName().substring(je.getName().lastIndexOf("/") + 1);
+                                    ResourceBundle bundle = finder.doFindCommandBundle(command.substring(0, command.indexOf("."))); 
+                                    System.out.println("\n  " + bundle.getString("name") + " - " + bundle.getString("description"));
+                                }
+                            }
+                        }
+                     }
 				}
 			} else {
 				System.out.println(pBundle.getString("no.commands"));
