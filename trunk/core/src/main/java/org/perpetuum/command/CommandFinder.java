@@ -56,18 +56,18 @@ public class CommandFinder {
     }
     
     public ResourceBundle doFindCommandBundle(String key) {
-    	ResourceBundle bundle = null;
-    	
-    	try {
-    		bundle = ResourceBundle.getBundle(path.replaceAll("/", ".") + key);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
+        	ResourceBundle bundle = null;
+        	
+        	try {
+        		bundle = ResourceBundle.getBundle(path.replaceAll("/", ".") + key);
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
     	
         return bundle;
     }
     
     public Enumeration doFindCommands() throws IOException {
-    	return Thread.currentThread().getContextClassLoader().getResources(path);
+    	    return Thread.currentThread().getContextClassLoader().getResources(path);
     }
 }
