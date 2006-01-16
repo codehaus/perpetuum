@@ -131,12 +131,13 @@
 	</target>
 	
 	<target name="test-core" description="Runs all tests for Perpetuum" depends="init,compile-core">
-		<junit dir="${core.test.bin}" printsummary="yes" fork="yes">
+		<junit dir="${core.test.bin}" printsummary="yes" fork="yes" haltonerror="no" haltonfailure="no" failureproperty="core.test.fail">
 			<classpath refid="core.test.path" />
-			<test name="org.perpetuum.command.AllTests" haltonerror="no" 
-				haltonfailure="no" failureproperty="core.test.fail">
-				<formatter type="xml"/>
-			</test>
+			
+			<test name="org.perpetuum.command.AllTests" />
+			<test name="org.perpetuum.AllTests" />
+			
+			<formatter type="xml"/>
 		</junit>
 		
 		<echo message="Done testing Perpetuum core" />
