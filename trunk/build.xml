@@ -27,6 +27,7 @@
 	
 	<!-- Distribution Directories -->
 	<property name="dist.home" value="${basedir}/dist" />
+	<property name="app.dist.home" value="${dist.home}/${app.name}-${app.ver}" />
 	
 	<!-- Paths -->
 	<path id="deploy.libs">
@@ -72,6 +73,7 @@
 				<include name="TEST-*.xml" />
 			</fileset>
 		</delete>
+		<delete file="${basedir}/lib/${app.name}-core-${app.ver}.jar" />
 	</target>
 		
 	<target name="init" description="Used to prepare for all targets">
@@ -92,7 +94,7 @@
 	
 	<target name="compile-core" description="Compiles the core without tests" depends="init">
 		<javac classpathref="core.test.path" destdir="${core.main.bin}" srcdir="${core.main.src}" 
-			includes="**/*.java" fork="yes" />
+			includes="**/*.java" fork="yes" debug="on"/>
 		<echo message="Compiling Perpetuum core complete..." />
 	</target>
 	
@@ -145,5 +147,40 @@
 	
 	<target name="test-console-webapp" description="Runs all tests for Perpetuum console-webapp" depends="init,compile-console-webapp">
 		<echo message="&lt;!-- Nothing to test yet --&gt;" />
+	</target>
+	
+	<target name="jar-core" description="Builds a jar of the Perpetuum core">
+		<copy todir="${core.main.bin}">
+			<fileset dir="${core.main.resources}" includes="*/**" />
+		</copy>
+		
+		<jar basedir="${core.main.bin}" destfile="${basedir}/lib/${app.name}-core-${app.ver}.jar" includes="*/**">
+			<manifest>
+				<attribute name="Main-Class" value="org.perpetuum.Main" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="package-dir" description="Builds a directory structure to be archived or ran from location" depends="compile-all,jar-core">
+		<copy todir="${app.dist.home}">
+			<fileset dir="${core.home}/src/main">
+				<include name="bin/**" />
+				<include name="conf/**" />
+				<include name="docroot/**" />
+				<include name="lib/**" />
+				<include name="logs/**" />
+			</fileset>
+		</copy>
+		<copy todir="${app.dist.home}/lib">
+			<fileset dir="${lib.dir}" includes="*.jar" />
+		</copy>
+		
+		<mkdir dir="${app.dist.home}/bin" />
+		<mkdir dir="${app.dist.home}/lib/ext" />
+		<mkdir dir="${app.dist.home}/logs" />
+	</target>
+	
+	<target name="package-zip" description="Builds an archived distribution" depends="package-dir">
+		<zip basedir="${dist.home}" zipfile="${dist.home}/${app.name}-${app.ver}.zip" includes="${app.name}-${app.ver}/**" />
 	</target>
 </project>
