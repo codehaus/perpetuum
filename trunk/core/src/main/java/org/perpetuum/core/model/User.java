@@ -7,7 +7,7 @@ public class User {
 	private Long id;
 	private String username;
 	private String password;
-	private String description;
+	private String email;
 	private boolean enabled;
 	private Set memberships = new HashSet();
 	
@@ -16,15 +16,15 @@ public class User {
 	/**
 	 * @return Returns the description.
 	 */
-	public String getDescription() {
-		return description;
+	public String getEmail() {
+		return email;
 	}
 	
 	/**
-	 * @param description The description to set.
+	 * @param email The description to set.
 	 */
-	public void setDescription(String description) {
-		this.description = description;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	/**
