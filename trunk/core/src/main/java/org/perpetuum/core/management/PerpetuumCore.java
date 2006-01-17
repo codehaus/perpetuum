@@ -15,6 +15,9 @@ import org.perpetuum.core.services.SchedulerService;
 import org.perpetuum.core.services.Service;
 import org.perpetuum.core.services.WebService;
 
+/**
+ * Management bean for Perpetuum.  Used to manage a running server instance.
+ */
 public class PerpetuumCore implements PerpetuumCoreMBean {
 	private String status = ServiceMBean.STOPPED;
 	private String name = System.getProperty("application.id") + " Server";
@@ -31,6 +34,9 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 	private ResourceBundle stopBundle = null;
 	private LinkedList dependencies = null;
 	
+	/**
+	 * Constructor
+	 */
 	public PerpetuumCore() {
 		log = LogFactory.getLog(PerpetuumCore.class);
 		init();
@@ -48,6 +54,9 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		}
 	}
 	
+	/**
+	 * Initializes the dependencies
+	 */
 	public void init() {
 		dependencies = new LinkedList();
 		
@@ -62,6 +71,9 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		dependencies.add(webService);
 	}
 	
+	/**
+	 * Starts each dependency
+	 */
 	public void start() {
 		if (!status.equals(ServiceMBean.STARTED)) {
 			try {
@@ -96,6 +108,9 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		}
 	}
 
+	/**
+	 * Stops each dependency
+	 */
 	public void stop() {
 		log.info(startBundle.getString("stop.header"));
 		
@@ -119,26 +134,47 @@ public class PerpetuumCore implements PerpetuumCoreMBean {
 		log.info(startBundle.getString("stop.complete"));
 	}
 	
+	/**
+	 * Returns Perpetuum's status
+	 */
 	public String getStatus() {
 		return status;
 	}
 
+	/**
+	 * Returns the application name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Returns the JMX ObjectName for easy reference
+	 */
 	public ObjectName getObjectName() {
 		return objectName;
 	}
 	
+	/**
+	 * Sets the HTTP port for JMX's web console
+	 * @param httpPort Listening port
+	 */
 	public void setHttpPort(int httpPort) {
 		this.httpPort = httpPort;
 	}
 	
+	/**
+	 * Sets the RMI port for JMX's naming service
+	 * @param rmiPort Listening port
+	 */
 	public void setRmiPort(int rmiPort) {
 		this.rmiPort = rmiPort;
 	}
 	
+	/**
+	 * Sets the Web Server port to listen on
+	 * @param webPort Listening port
+	 */
 	public void setWebPort(int webPort) {
 		this.webPort = webPort;
 	}

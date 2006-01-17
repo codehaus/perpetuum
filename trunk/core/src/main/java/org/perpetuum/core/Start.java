@@ -29,6 +29,9 @@ public class Start {
 	private static CommandFinder finder = null;
 	private static CommandFinder sFinder = null;
 	
+	/**
+	 * Constructor
+	 */
 	private Start() {
 		log = LogFactory.getLog(Start.class);
 		
@@ -41,6 +44,9 @@ public class Start {
 		createOptions();
 	}
 	
+	/**
+	 * Creates the command line arguments and options for this command
+	 */
 	private void createOptions() {
 		Option httpport = new Option("h", "httpPort", true, bundle.getString("options.httpport.description"));
 		Option rmiport = new Option("r", "rmiPort", true, bundle.getString("options.rmiport.description"));
@@ -60,6 +66,10 @@ public class Start {
 		options.addOption(help);
 	}
 	
+	/**
+	 * Entry point called by org.perpetuum.Main
+	 * @param args Arguments passed from org.perpetuum.Main
+	 */
 	public static void main(String[] args) {
 		Start s = new Start();
 		CommandLine line = null;
@@ -113,6 +123,9 @@ public class Start {
 		}
 	}
 	
+	/**
+	 * Prints usage and help for this command
+	 */
 	private static void printHelp() {
 		HelpFormatter formatter = new HelpFormatter();
 		

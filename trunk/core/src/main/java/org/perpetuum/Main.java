@@ -27,6 +27,9 @@ public class Main {
 	private static ResourceBundle pBundle = null;
 	private static ResourceBundle cBundle = null;
 	
+	/**
+	 * This method initializes the classpath and sets a few system properties
+	 */
 	public static void init() {
 		System.setProperty("perpetuum.commands.path", COMMANDS_PATH);
 		System.setProperty("perpetuum.services.path", SERVICES_PATH);
@@ -37,6 +40,10 @@ public class Main {
 		PerpetuumUtils.getInstance().prepareSystem();
 	}
 		
+	/**
+	 * The entry point for Perpetuum.
+	 * @param args arguments that signify the command and its arguments
+	 */
 	public static void main(String[] args) {
 		init();
 		
@@ -121,6 +128,9 @@ public class Main {
 		}
 	}
 	
+	/**
+	 * Prints out the available commands if none is provided.
+	 */
 	private static void printAvailableCommands() {
 		System.out.println(pBundle.getString("application.name") + " - " + pBundle.getString("application.version"));
 		System.out.println(pBundle.getString("usage.header.0"));
