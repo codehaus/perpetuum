@@ -12,6 +12,9 @@ public abstract class AbstractService implements Service {
 	public String status = Service.STOPPED;
 	public static String NAME;
 	
+	/**
+	 * Prepares each Service
+	 */
 	public void prepare(Class clazz) {
 		NAME = clazz.getName().substring(clazz.getName().lastIndexOf(".") + 1);
 		
@@ -24,9 +27,18 @@ public abstract class AbstractService implements Service {
 		ServiceRegistry.getDefault().register(NAME, this);
 	}
 	
+	/**
+	 * Initializes the service
+	 */
 	public abstract void init() throws Exception;
 
+	/**
+	 * Starts the service
+	 */
 	public abstract void start() throws Exception;
 
+	/**
+	 * Stops the service
+	 */
 	public abstract void stop();
 }

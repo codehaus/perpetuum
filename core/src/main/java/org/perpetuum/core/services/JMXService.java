@@ -12,6 +12,10 @@ import javax.management.remote.JMXServiceURL;
 
 import mx4j.log.Log4JLogger;
 
+/**
+ * This class is used to manage the JMX implementation for the management and 
+ * monitoring of Perpetuum.
+ */
 public class JMXService extends AbstractService {
 	public static final String RMI_JNDI_NAME = "RMIConnector";
 	public static final String DOMAIN_NAME = "PerpetuumDomain";
@@ -25,6 +29,9 @@ public class JMXService extends AbstractService {
 	private String rmiStatus = Service.STOPPED;
 	private String httpStatus = Service.STOPPED;
 	
+	/**
+	 * Constructor
+	 */
 	public JMXService() {
 		System.setProperty("mx4j.log.priority", "debug");
 		mx4j.log.Log.redirectTo(new Log4JLogger());
@@ -32,12 +39,20 @@ public class JMXService extends AbstractService {
 		prepare(JMXService.class);
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see org.perpetuum.core.services.Service#init()
+	 */
 	public void init() throws Exception {
 		initializeMBeanServer();
 		initializeRMIRegistry();
 		initializeHttpAdaptor();
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see org.perpetuum.core.services.Service#start()
+	 */
 	public void start() throws Exception {
 		init();
 		
@@ -50,6 +65,10 @@ public class JMXService extends AbstractService {
 		log.info(MessageFormat.format(bundle.getString("jmx.http.started"), new Object[] { String.valueOf(httpPort) }));
 	}
 	
+	/**
+	 * Initializes the RMI-backed registry
+	 * @throws Exception
+	 */
 	public void initializeRMIRegistry() throws Exception {
 		rmiRegistry = ObjectName.getInstance("naming:type=rmiregistry");
 		mbs.createMBean("mx4j.tools.naming.NamingService", rmiRegistry, null, new Object[] {new Integer(rmiPort)}, new String[] {"int"});
@@ -60,6 +79,10 @@ public class JMXService extends AbstractService {
 	    connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, mbs);
 	}
 	
+	/**
+	 * Initializes the MBeanServer
+	 * @throws Exception
+	 */
 	public void initializeMBeanServer() throws Exception {
 		mbs = MBeanServerFactory.createMBeanServer(DOMAIN_NAME);
 		
@@ -67,6 +90,10 @@ public class JMXService extends AbstractService {
 		log.info(bundle.getString("jmx.started"));
 	}
 	
+	/**
+	 * Initializes the HTTP Console
+	 * @throws Exception
+	 */
 	public void initializeHttpAdaptor()  throws Exception {
 		httpAdaptor = new ObjectName("Server:name=HttpAdaptor");
 		xsltProcessor = new ObjectName("Server:name=XSLTProcessor");
@@ -79,6 +106,10 @@ public class JMXService extends AbstractService {
 		mbs.setAttribute(httpAdaptor, new Attribute("ProcessorName", xsltProcessor));
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see org.perpetuum.core.services.Service#stop()
+	 */
 	public void stop() {
 		try {
 			if (httpStatus.equals(Service.STARTED)) {
@@ -106,18 +137,34 @@ public class JMXService extends AbstractService {
 		ServiceRegistry.getDefault().unRegister(NAME);
 	}
 	
+	/**
+	 * Returns reference to the MBeanServer
+	 * @return MBeanServer The MBeanServer
+	 */
 	public MBeanServer getMBeanServer() {
 		return mbs;
 	}
 	
+	/**
+	 * Returns the HTTP port that JMX's console is listening on
+	 * @return
+	 */
 	public int getHttpPort() {
 		return httpPort;
 	}
 	
+	/**
+	 * Sets the HTTP port that JMX listens on
+	 * @param httpPort Listening Port
+	 */
 	public void setHttpPort(int httpPort) {
 		this.httpPort = httpPort;
 	}
 	
+	/**
+	 * Sets the RMI port that JMX listens on
+	 * @param rmiPort Listening port
+	 */
 	public void setRmiPort(int rmiPort) {
 		this.rmiPort = rmiPort;
 	}

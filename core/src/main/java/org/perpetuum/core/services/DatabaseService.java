@@ -12,6 +12,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.perpetuum.command.CommandFinder;
 
+/**
+ * This class is used to manage the database object used as the backend for all 
+ * persisted data for Perpetuum
+ */
 public class DatabaseService extends AbstractService {
 	private final String DATABASE_HOME = System.getProperty("perpetuum.home") + File.separator + "data";
 	private final String DATABASE_NAME = "PERPETUUM";
@@ -19,19 +23,34 @@ public class DatabaseService extends AbstractService {
 	private Configuration cfg = null;
 	private SessionFactory sf = null;
 	
+	/**
+	 * Constructor
+	 */
 	public DatabaseService() {
 		prepare(DatabaseService.class);
 	}
 	
+	/*
+	 *  (non-Javadoc)
+	 * @see org.perpetuum.core.services.Service#init()
+	 */
 	public void init() throws Exception {
 		setDatabaseProperties();
 		initializeORM();
 	}
 	
+	/**
+	 * Returns an instance of Hibernate's SessionFactory
+	 * @return SessionFactory
+	 */
 	public SessionFactory getSessionFactory() {
 		return sf;
 	}
 	
+	/**
+	 * Initializes ORM System
+	 * @throws Exception
+	 */
 	public void initializeORM() throws Exception {
 		cfg = new Configuration();
 		
@@ -46,6 +65,10 @@ public class DatabaseService extends AbstractService {
 		sf = cfg.buildSessionFactory();
 	}
 	
+	/**
+	 * Sets database properties
+	 * @throws Exception
+	 */
 	public void setDatabaseProperties() throws Exception {
 		File derby = new File(System.getProperty("perpetuum.home") + 
 				File.separator + "conf" + File.separator + "derby.conf");
@@ -108,6 +131,10 @@ public class DatabaseService extends AbstractService {
 		}
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see org.perpetuum.core.services.Service#start()
+	 */
 	public void start() throws Exception {
 		init();
 		
@@ -115,6 +142,10 @@ public class DatabaseService extends AbstractService {
 		status = Service.STARTED;
 	}
 
+	/*
+	 *  (non-Javadoc)
+	 * @see org.perpetuum.core.services.Service#stop()
+	 */
 	public void stop() {
 		sf.close();
 		

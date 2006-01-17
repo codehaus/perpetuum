@@ -30,6 +30,9 @@ public class Stop {
 	private static ResourceBundle sBundle;
 	private static Log log = null;
 	
+	/**
+	 * Constructor
+	 */
 	public Stop() {
 		log = LogFactory.getLog(Stop.class);
 		
@@ -42,6 +45,9 @@ public class Stop {
 		createOptions();
 	}
 	
+	/**
+	 * Creates the command line arguments and options for this command
+	 */
 	private void createOptions() {
 		Option help = new Option("help", "help", false, bundle.getString("options.help.description"));
 		Option rmiport = new Option("r", "rmiPort", true, bundle.getString("options.rmiport.description"));
@@ -53,6 +59,10 @@ public class Stop {
 		options.addOption(help);
 	}
 
+	/**
+	 * Entry point called by org.perpetuum.Main
+	 * @param args Arguments passed from org.perpetuum.Main
+	 */
 	public static void main(String[] args) {
 		Stop s = new Stop();
 		CommandLine line = null;
@@ -93,6 +103,9 @@ public class Stop {
 		}
 	}
 	
+	/**
+	 * Prints usage and help for this command
+	 */
 	private static void printHelp() {
 		HelpFormatter formatter = new HelpFormatter();
 		

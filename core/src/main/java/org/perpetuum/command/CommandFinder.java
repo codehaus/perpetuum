@@ -10,14 +10,27 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+/**
+ * This utility class is used to find the dynamic commands and their properties 
+ * files.  This is also used to find ResourceBundles for i18n.
+ */
 public class CommandFinder {
 	private String path;
 	private Map classMap = Collections.synchronizedMap(new HashMap());
 	
+	/**
+	 * Constructor
+	 * @param path The path to find all commands
+	 */
 	public CommandFinder(String path) {
 		this.path = path;
 	}
 	
+	/**
+	 * String signifying the command to look for
+	 * @param key Command's key.  Example start.
+	 * @return Properties object
+	 */
     public Properties doFindCommandProperies(String key) {
         Properties p = null;
         
@@ -55,6 +68,11 @@ public class CommandFinder {
         return p;
     }
     
+    /**
+     * Used to allow for an i18n implementation of the command's properties
+     * @param key Command's key.  Example: start
+     * @return
+     */
     public ResourceBundle doFindCommandBundle(String key) {
         	ResourceBundle bundle = null;
         	
@@ -67,6 +85,11 @@ public class CommandFinder {
         return bundle;
     }
     
+    /**
+     * Locates all commands available for the specified path.
+     * @return Enumeration of the commands
+     * @throws IOException
+     */
     public Enumeration doFindCommands() throws IOException {
     	    return Thread.currentThread().getContextClassLoader().getResources(path);
     }
