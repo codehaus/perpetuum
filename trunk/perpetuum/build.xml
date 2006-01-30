@@ -1,0 +1,133 @@
+<project basedir="." default="integration" name="Perpetuum">
+	<!-- Build properties -->
+	<property name="build.debug" value="on" />
+	
+	<!-- Resource location properties -->
+	<property name="main.src" value="${basedir}/src/main" />
+	<property name="main.test.src" value="${basedir}/src/test" />
+	
+	<!-- Staged location properties -->
+	<property name="dist.home" value="${basedir}/dist" />
+	<property name="main.dist" value="${dist.home}/main" />
+	<property name="test.dist" value="${dist.home}/test" />
+	<property name="resources.home" value="${dist.home}/resources" />
+	
+	<!-- Report location properties -->
+	<property name="report.home" value="${dist.home}/reports" />
+	<property name="junit.report.home" value="${report.home}/junit" />
+	<property name="emma.report.home" value="${report.home}/emma" />
+	
+	<!-- EMMA properties -->
+	<property name="main.instrumented.dist" value="${basedir}/dist/main-instrumented" />
+	<path id="emma.lib" >
+		<pathelement location="${basedir}/lib/test/emma.jar" />
+	    <pathelement location="${basedir}/lib/test/emma_ant.jar" />
+	</path>
+
+	<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+	
+	<!-- Path properties -->
+	<path id="main.instrumented">
+		<pathelement location="${main.dist}" />
+	</path>
+	
+	<path id="main.compile">
+		<fileset dir="${basedir}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	
+	<path id="test.compile">
+		<path refid="main.compile" />
+		<fileset dir="${basedir}/lib/test" includes="*.jar" />
+		<pathelement location="${main.dist}" />
+	</path>
+	
+	<path id="test.run">
+		<path refid="main.compile" />
+		<pathelement location="${main.instrumented.dist}/classes" />
+		<pathelement location="${test.dist}" />
+		<pathelement location="${resources.home}" />
+		<fileset dir="${basedir}/lib/test" includes="*.jar" />
+	</path>
+	
+	<target description="Cleans all build artifacts" name="clean">
+		<delete dir="${dist.home}" />
+	</target>
+	
+	<target description="Creates all necessary build/release artifacts" name="stage">
+		<mkdir dir="${main.dist}" />
+		<mkdir dir="${main.instrumented.dist}" />
+		<mkdir dir="${test.dist}" />
+		<mkdir dir="${resources.home}" />
+		<mkdir dir="${junit.report.home}" />
+		<mkdir dir="${emma.report.home}" />
+		
+		<copy todir="${resources.home}/commands">
+			<fileset dir="${main.src}/commands" includes="*.properties" />
+		</copy>
+		
+		<copy todir="${resources.home}/services">
+			<fileset dir="${main.src}/services" includes="*.properties" />
+		</copy>
+		
+		<copy todir="${resources.home}">
+			<fileset dir="${main.src}" includes="*.properties" />
+		</copy>
+	</target>
+		
+	<target description="Runs an integration build" name="integration" depends="report">
+		
+	</target>
+	
+	<target description="Compiles all Perpetuum artifacts" name="build" depends="stage">
+		<javac classpathref="main.compile" destdir="${main.dist}" srcdir="${main.src}" 
+			includes="**/*.java" fork="yes" debug="${build.debug}" />
+		
+		<javac classpathref="test.compile" destdir="${test.dist}" srcdir="${main.test.src}" 
+			includes="**/*.java" fork="yes" debug="${build.debug}" />
+	</target>
+	
+	<target description="Runs all Perpetuum tests" name="test" depends="build">
+		<emma enabled="${build.debug}" >
+			<instr instrpathref="main.instrumented" 
+		        destdir="${main.instrumented.dist}"	
+		        metadatafile="${emma.report.home}/metadata.emma" 
+				mode="fullcopy" />
+		</emma>
+		
+		<junit dir="${test.dist}" printsummary="yes" fork="yes" haltonerror="no" haltonfailure="no" 
+			failureproperty="test.failure" showoutput="${build.debug}">
+			<classpath refid="test.run" />
+			<jvmarg value="-Demma.coverage.out.file=${emma.report.home}/coverage.emma" />
+			
+			<batchtest fork="yes" todir="${junit.report.home}">
+				<fileset dir="${test.dist}">
+			    	<include name="**/AllTests.*"/>
+			    </fileset>
+			</batchtest>
+			
+			<formatter type="xml" />
+		</junit>
+	</target>
+	
+	<target description="Runs all Perpetuum reports" name="report" depends="build,test">
+		<emma enabled="${build.debug}">
+			<report sourcepath="${main.src}">
+		        <fileset dir="${emma.report.home}" >
+		        	<include name="*.emma" />
+		        </fileset>
+
+		        <txt outfile="${emma.report.home}/coverage.txt" />
+		        <html outfile="${emma.report.home}/index.html" />
+		    </report>
+		</emma>
+		
+		<junitreport todir="${junit.report.home}">
+			<fileset dir="${junit.report.home}">
+		    	<include name="TEST-*.xml"/>
+		  	</fileset>
+		  	<report format="frames" todir="${junit.report.home}"/>
+		</junitreport>
+	</target>
+</project>
