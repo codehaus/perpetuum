@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.perpetuum.classpath.SystemClassPath;
+import org.codehaus.perpetuum.commands.Command;
 
 public class PerpetuumUtil {
 	
@@ -54,7 +55,7 @@ public class PerpetuumUtil {
 	 */
 	public static void setupClasspath() {
 		ClassLoader current = Thread.currentThread().getContextClassLoader();
-		URL classURL = Thread.currentThread().getContextClassLoader().getResource(System.getProperty("perpetuum.commands.path") + "start.properties");
+		URL classURL = Thread.currentThread().getContextClassLoader().getResource(Command.PATH + "start.properties");
         String propsString = classURL.getFile();
         URL jarURL = null;
         File jarFile = null;

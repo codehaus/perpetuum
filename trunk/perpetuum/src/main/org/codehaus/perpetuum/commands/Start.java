@@ -16,7 +16,13 @@ public class Start extends AbstractCommand {
 	 * @see org.codehaus.perpetuum.commands.AbstractCommand#run()
 	 */
 	public void run() {
-		ApplicationContext factory = new FileSystemXmlApplicationContext(System.getProperty("perpetuum.home") + File.separator + "conf" + File.separator + "springStart.xml");
+        String configPath = System.getProperty("perpetuum.home") + File.separator + "conf" + File.separator + "springStart.xml";
+        
+        if (!new File(configPath).exists()) {
+            configPath = "springStart.xml";
+        }
+        
+		ApplicationContext factory = new FileSystemXmlApplicationContext(configPath);
 	}
 	
 	/**

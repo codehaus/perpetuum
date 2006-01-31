@@ -28,8 +28,6 @@ public class PerpetuumLauncher {
 			bundle = ResourceBundle.getBundle("perpetuum");
 			
 			PerpetuumUtil.setup();
-			
-			
 		} catch (Exception e) {
 			// Should never happen but just in case...
 			
