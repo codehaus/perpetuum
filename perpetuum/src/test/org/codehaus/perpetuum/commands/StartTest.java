@@ -20,7 +20,7 @@ public class StartTest extends TestCase {
 	 */
 	public void testRun() {
 		try {
-			s.run(new String[0]);
+			s.run(new String[] { "--help" });
 		} catch (Exception e) {
 			fail("An exception should never be thrown from Start.run()!");
 		}

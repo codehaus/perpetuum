@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.perpetuum.utils.PerpetuumUtil;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SocketListener;
 import org.mortbay.http.handler.ResourceHandler;
@@ -54,18 +55,37 @@ public class WebService implements Service {
 	public void start() throws Exception {
 		init();
 		
-		server.start();
+        try {
+            server.start();
+        } catch (Exception e) {
+            if (PerpetuumUtil.isDebugOn()) {
+                e.printStackTrace();
+            }
+            
+            log.error(e.getMessage());
+            
+            throw new Exception(e);
+        }
+            
 	}
 
 	/**
 	 * @see org.codehaus.perpetuum.services.Service#stop()
 	 */
-	public void stop() {
+	public void stop() throws Exception {
 		try {
-			server.stop();
-		} catch (InterruptedException e) {
-			log.error(e);
-		}
+            server.stop();
+            
+            server.destroy();
+        } catch (Exception e) {
+            if (PerpetuumUtil.isDebugOn()) {
+                e.printStackTrace();
+            }
+            
+            log.error(e.getMessage());
+            
+            throw new Exception(e);
+        }
 	}
 	
 	/**

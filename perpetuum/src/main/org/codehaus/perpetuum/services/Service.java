@@ -20,6 +20,7 @@ public interface Service {
 	
 	/**
 	 * Stops the Service
+     * @throws Exception Thrown if there is an error during shutdown
 	 */
-	public void stop();
+	public void stop() throws Exception;
 }
