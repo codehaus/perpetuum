@@ -5,10 +5,10 @@ package org.codehaus.perpetuum.states;
  */
 public class StateChangedEvent {
 	private Class clazz;
-	private States fromState;
-	private States toState;
+	private State fromState;
+	private State toState;
 
-	public StateChangedEvent(Class clazz, States fromState, States toState) {
+	public StateChangedEvent(Class clazz, State fromState, State toState) {
 		this.clazz = clazz;
 		this.fromState = fromState;
 		this.toState = toState;
@@ -24,14 +24,14 @@ public class StateChangedEvent {
 	/**
 	 * @return Returns the fromState.
 	 */
-	public States getFromState() {
+	public State getFromState() {
 		return fromState;
 	}
 
 	/**
 	 * @return Returns the toState.
 	 */
-	public States getToState() {
+	public State getToState() {
 		return toState;
 	}
 }

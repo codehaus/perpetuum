@@ -3,17 +3,15 @@ package org.codehaus.perpetuum.services;
 import java.io.File;
 import java.util.ResourceBundle;
 
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.codehaus.perpetuum.states.State;
 import org.codehaus.perpetuum.utils.PerpetuumUtil;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SocketListener;
 import org.mortbay.http.handler.ResourceHandler;
 import org.mortbay.jetty.Server;
 
-public class WebService implements Service {
-	private Log log = LogFactory.getLog(getClass());
-	private ResourceBundle bundle = ResourceBundle.getBundle(Service.RESOURCE_PATH + getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1).toLowerCase());
+public class WebService extends AbstractService {
 	private int port = 5000;
 	private Server server = null;
 	private SocketListener listener = null;
@@ -24,6 +22,9 @@ public class WebService implements Service {
 	 * @see org.codehaus.perpetuum.services.Service#init()
 	 */
 	public void init() {
+		setLog(LogFactory.getLog(getClass()));
+		setResourceBundle(ResourceBundle.getBundle(Service.RESOURCE_PATH + getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1).toLowerCase()));
+		
 		System.setProperty("org.mortbay.log.LogFactory.noDiscovery", "false");
 		
 		server = new Server();
@@ -55,6 +56,8 @@ public class WebService implements Service {
 	public void start() throws Exception {
 		init();
 		
+		setState(State.STARTING);
+		
         try {
             server.start();
         } catch (Exception e) {
@@ -62,17 +65,20 @@ public class WebService implements Service {
                 e.printStackTrace();
             }
             
-            log.error(e.getMessage());
+            getLog().error(e.getMessage());
             
             throw new Exception(e);
         }
             
+        setState(State.STARTED);
 	}
 
 	/**
 	 * @see org.codehaus.perpetuum.services.Service#stop()
 	 */
 	public void stop() throws Exception {
+		setState(State.STOPPING);
+		
 		try {
             server.stop();
             
@@ -82,26 +88,12 @@ public class WebService implements Service {
                 e.printStackTrace();
             }
             
-            log.error(e.getMessage());
+            getLog().error(e.getMessage());
             
             throw new Exception(e);
         }
-	}
-	
-	/**
-	 * Used to get a reference to the Log object
-	 * @return log
-	 */
-	public Log getLog() {
-		return log;
-	}
-	
-	/**
-	 * Used to get a reference to the ResourceBundle object
-	 * @return bundle
-	 */
-	public ResourceBundle getBundle() {
-		return bundle;
+        
+        setState(State.STOPPED);
 	}
 
 	/**

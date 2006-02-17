@@ -23,15 +23,6 @@ public class SystemClassPath extends BasicURLClassPath {
     }
 
     /**
-     * @see org.perpetuum.classpath.ClassPath#addJarToPath(java.net.URL)
-     */
-    public void addJarToPath(URL jar) throws Exception {
-        //System.out.println("[|] SYSTEM "+jar.toExternalForm());
-        this.addJarToPath(jar, getSystemLoader());
-        this.rebuildJavaClassPathVariable();
-    }
-
-    /**
      * @see org.perpetuum.classpath.ClassPath#getClassLoader()
      */
     public ClassLoader getClassLoader() {
