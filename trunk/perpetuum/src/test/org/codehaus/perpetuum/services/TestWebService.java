@@ -36,14 +36,22 @@ public class TestWebService extends TestCase {
 	 * Test method for 'org.codehaus.perpetuum.services.WebService.getLog()'
 	 */
 	public void testGetLog() {
-	    assertNotNull("Should never return null!", ws.getLog());
+	    assertNull("Should return null!", ws.getLog());
+	    
+	    ws.init();
+	    
+	    assertNotNull("Should not return null after init()!", ws.getLog());
 	}
 
 	/*
 	 * Test method for 'org.codehaus.perpetuum.services.WebService.getBundle()'
 	 */
 	public void testGetBundle() {
-	    assertNotNull("Should never return null!", ws.getBundle());
+		assertNull("Should return null!", ws.getBundle());
+	    
+	    ws.init();
+	    
+	    assertNotNull("Should not return null after init()!", ws.getBundle());
 	}
 
 	/*

@@ -1,7 +1,6 @@
 package org.codehaus.perpetuum.classpath;
 
 import java.io.File;
-import java.net.URL;
 
 /**
  * This class is used to modify the System ClassLoader for dynamic support for 
@@ -20,9 +19,4 @@ public interface ClassPath {
      * Adds the jars in the directory to the Classpath
      */
     void addJarsToPath(File dir) throws Exception;
-
-    /**
-     * Adds the jars in the directory the URL points to to the Classpath
-     */
-    void addJarToPath(URL dir) throws Exception;
 }

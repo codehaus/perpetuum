@@ -1,5 +1,7 @@
 package org.codehaus.perpetuum.services;
 
+import org.codehaus.perpetuum.states.State;
+
 /**
  * This interface will be implemented by ever Service
  */
@@ -23,4 +25,14 @@ public interface Service {
      * @throws Exception Thrown if there is an error during shutdown
 	 */
 	public void stop() throws Exception;
+	
+	/**
+	 * Sets the Service State
+	 */
+	public void setState(State state);
+	
+	/**
+	 * Gets the Service State
+	 */
+	public State getState();
 }

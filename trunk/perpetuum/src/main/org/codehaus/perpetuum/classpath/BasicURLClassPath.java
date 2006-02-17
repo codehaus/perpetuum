@@ -16,26 +16,7 @@ import sun.misc.URLClassPath;
  * This code was originally in OpenEJB (http://www.openejb.org)
  */
 public abstract class BasicURLClassPath implements ClassPath {
-	
-	/**
-	 * Returns the Context ClassLoader
-	 */
-	public static ClassLoader getContextClassLoader() {
-        return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-            public ClassLoader run() {
-                return Thread.currentThread().getContextClassLoader();
-            }
-        });
-    } 
-
     private java.lang.reflect.Field ucpField;
-
-    /**
-     * Adds the jar pointed to by the URL to the Classpath
-     */
-    protected void addJarToPath(final URL jar, final URLClassLoader loader) throws Exception {
-        this.getURLClassPath(loader).addURL(jar);
-    }
 
     /**
      * Adds jars to the Classpath loaded from the directory
