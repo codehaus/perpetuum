@@ -40,7 +40,14 @@ public class WebService extends AbstractService {
 		
 		rootContext.setClassLoaderJava2Compliant(true);
 		rootContext.setContextPath("/");
-		rootContext.setResourceBase(System.getProperty("perpetuum.home") + File.separator + "docroot");
+		
+		if (new File(System.getProperty("perpetuum.home") + File.separator + "docroot").exists()) {
+			rootContext.setResourceBase(System.getProperty("perpetuum.home") + File.separator + "docroot");
+		} else {
+			// Workaround for running in an IDE
+			rootContext.setResourceBase(System.getProperty("perpetuum.home") + File.separator + ".." + File.separator + "docroot");
+		}
+		
 		rootContext.addHandler(resourceHandler);
 		
 		server.addContext(rootContext);
