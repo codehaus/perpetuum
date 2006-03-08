@@ -9,6 +9,10 @@ import org.codehaus.perpetuum.states.StateChangedListener;
 import org.codehaus.perpetuum.states.StateChangedNotifier;
 import org.codehaus.perpetuum.states.State;
 
+/**
+ * AbstractService is the class that all Services should extend.  This class 
+ * takes care of the mundane interface implementations.
+ */
 public abstract class AbstractService implements Service, StateChangedNotifier, StateChangedListener {
 	private Log log = null;
 	private ResourceBundle bundle = null;

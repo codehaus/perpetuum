@@ -130,4 +130,8 @@
 		  	<report format="frames" todir="${junit.report.home}"/>
 		</junitreport>
 	</target>
+	
+	<target description="Packages Perpetuum" name="package" depends="report">
+		
+	</target>
 </project>
