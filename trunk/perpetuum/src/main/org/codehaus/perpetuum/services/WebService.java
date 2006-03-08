@@ -11,6 +11,9 @@ import org.mortbay.http.SocketListener;
 import org.mortbay.http.handler.ResourceHandler;
 import org.mortbay.jetty.Server;
 
+/**
+ * WebService is the class that provides all web services to the user
+ */
 public class WebService extends AbstractService {
 	private int port = 5000;
 	private Server server = null;
@@ -51,9 +54,6 @@ public class WebService extends AbstractService {
 		rootContext.addHandler(resourceHandler);
 		
 		server.addContext(rootContext);
-		
-		// System.setProperty("perpetuum.webapps.home",System.getProperty("perpetuum.home") + File.separator + "docroot" + File.separator + "webapps");
-		
 		server.setStopAtShutdown(true);
 	}
 	
