@@ -6,6 +6,14 @@ import org.apache.commons.logging.Log;
 
 public abstract class AbstractCommand implements Command {
 	public boolean help = false;
+	private ResourceBundle pBundle = ResourceBundle.getBundle("perpetuum");
+	
+	/**
+	 *  Used to get a reference to the Perpetuum ResourceBundle
+	 */
+	public ResourceBundle getPBundle() {
+		return pBundle;
+	}
 	
 	/**
 	 * Used to get a reference to the Log object
@@ -39,6 +47,8 @@ public abstract class AbstractCommand implements Command {
 		parseArguments(args);
 		
 		if (!ranHelp()) {
+			getLog().info(getBundle().getString("command.info"));
+			
 			run();
 		}
 	}

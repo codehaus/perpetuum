@@ -1,13 +1,14 @@
 package org.codehaus.perpetuum.services;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
+import org.codehaus.perpetuum.states.State;
 import org.codehaus.perpetuum.states.StateChangedEvent;
 import org.codehaus.perpetuum.states.StateChangedListener;
 import org.codehaus.perpetuum.states.StateChangedNotifier;
-import org.codehaus.perpetuum.states.State;
 
 /**
  * AbstractService is the class that all Services should extend.  This class 
@@ -80,6 +81,9 @@ public abstract class AbstractService implements Service, StateChangedNotifier, 
 	 * @see org.codehaus.perpetuum.states.StateChangedListener#stateChanged(org.codehaus.perpetuum.states.StateChangedEvent)
 	 */
 	public void stateChanged(StateChangedEvent event) {
+		ResourceBundle pBundle = ResourceBundle.getBundle("perpetuum");
+		getLog().info(MessageFormat.format(pBundle.getString("perpetuum.service.transition"), new Object[] { event.getClazz().getName().substring(getClass().getName().lastIndexOf(".") + 1), event.getFromState(), event.getToState() }));
+		
 		notifyListeners(event);
 	}
 

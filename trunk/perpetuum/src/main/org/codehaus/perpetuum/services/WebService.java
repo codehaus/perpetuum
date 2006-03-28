@@ -78,6 +78,23 @@ public class WebService extends AbstractService {
         }
             
         setState(State.STARTED);
+        
+        deployRESTWS();
+        deployConsole();
+	}
+	
+	/**
+	 * Deploys the REST web service for remote management
+	 */
+	private void deployRESTWS() {
+		
+	}
+	
+	/**
+	 * Deploys the Perpetuum web console
+	 */
+	private void deployConsole() {
+		
 	}
 
 	/**
