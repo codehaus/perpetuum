@@ -107,4 +107,15 @@ public class PerpetuumUtil {
 		
 		return debug;
 	}
+	
+	public static boolean isVerboseOn() {
+		boolean verbose = false;
+		String verboseAsString = System.getProperty("perpetuum.verbose");
+		
+		if (verboseAsString != null && verboseAsString.equalsIgnoreCase("true")) {
+			verbose = true;
+		}
+		
+		return verbose;
+	}
 }
