@@ -20,6 +20,11 @@
         <layout class="org.apache.log4j.SimpleLayout" />
     </appender>
     
+    <appender name="hibernatel" class="org.apache.log4j.FileAppender">
+    	<param name="File" value="${perpetuum.home}/logs/hibernate.log" />
+    	<layout class="org.apache.log4j.SimpleLayout" />
+	</appender>
+    
     <logger name="org.mortbay" additivity="false">
         <appender-ref ref="jetty" />
     </logger>
@@ -32,6 +37,18 @@
     		<appender-ref ref="spring" />
     </logger>
 
+	<logger name="javax.transaction" additivity="false">
+	    <appender-ref ref="hibernatel" />
+	</logger>
+	
+	<logger name="org.hibernate" additivity="false">
+	    <appender-ref ref="hibernatel" />
+	</logger>
+	
+	<logger name="net.sf.ehcache" additivity="false">
+	    <appender-ref ref="hibernatel" />
+	</logger>
+	
     <root>
         <priority value="debug" />
         <appender-ref ref="console" />

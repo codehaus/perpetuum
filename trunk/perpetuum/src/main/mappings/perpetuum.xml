@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="org.perpetuum.core.model.User" table="USERS">
+    <class name="org.codehaus.perpetuum.model.User" table="USERS">
         <id name="id" column="ID" type="long">
             <generator class="native" />
         </id>
