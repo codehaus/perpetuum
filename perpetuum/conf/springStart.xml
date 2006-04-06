@@ -4,16 +4,16 @@
     <!-- Service Beans -->
     <bean id="webService" class="org.codehaus.perpetuum.services.WebService" init-method="start" destroy-method="stop">
         <property name="port"><value>5000</value></property>
-    </bean>	
+    </bean>
 
     <!-- Perpetuum Data Source -->
-    <bean id="perpetuumDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="perpetuumDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" destroy-method="close">
         <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
         <property name="url" value="jdbc:derby:PERPETUUM;create=true" />
     </bean>
 
     <!-- Perpetuum Session Factory -->
-    <bean id="perpetuumSessionFactory" class="org.springframework.orm.hibernate.LocalSessionFactoryBean">
+    <bean id="perpetuumSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource" ref="perpetuumDataSource" />
         <property name="mappingResources">
             <list>
