@@ -17,7 +17,7 @@
         <property name="dataSource" ref="perpetuumDataSource" />
         <property name="mappingResources">
             <list>
-                <value>META-INF/mappings/perpetuum.conf</value>
+                <value>mappings/perpetuum.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

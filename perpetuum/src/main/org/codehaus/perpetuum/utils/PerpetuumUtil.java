@@ -17,6 +17,25 @@ public class PerpetuumUtil {
 	public static void setup() {
 		setupClasspath();
 		setupLogging();
+		setupDatabase();
+	}
+	
+	/**
+	 * Used to set some Derby properties
+	 *
+	 */
+	public static void setupDatabase() {
+		System.setProperty("derby.system.home", 
+			System.getProperty("perpetuum.home") + File.separator + "data");
+		
+		File derbyHome = new File(System.getProperty("perpetuum.home") + File.separator + "data");
+		
+		if (!derbyHome.exists()) {
+			derbyHome.mkdirs();
+		}
+		
+        System.setProperty("derby.stream.error.file", 
+        	System.getProperty("perpetuum.logs.home") + File.separator + "derby.log");
 	}
 	
 	/**
@@ -24,7 +43,7 @@ public class PerpetuumUtil {
 	 */
 	public static void setupLogging() {
 		File log4j = new File(System.getProperty("perpetuum.home") + 
-				File.separator + "conf" + File.separator + "log4j.conf");
+				File.separator + "conf" + File.separator + "log4j.xml");
 		
 		File logDir = new File(System.getProperty("perpetuum.home") + 
 				File.separator + "logs");
@@ -41,7 +60,7 @@ public class PerpetuumUtil {
 		if (log4j.exists()) {
 			DOMConfigurator.configure(log4j.getAbsolutePath());
 		} else {
-			URL lu = PerpetuumUtil.class.getClassLoader().getResource("log4j.conf");
+			URL lu = PerpetuumUtil.class.getClassLoader().getResource("log4j.xml");
 			
 			if (lu != null) {
 				DOMConfigurator.configure(lu);
