@@ -7,6 +7,7 @@ public class User {
 	private Long id;
 	private String username;
 	private String password;
+    private String realname;
 	private String email;
 	private boolean enabled;
 	
@@ -79,4 +80,12 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
 }
