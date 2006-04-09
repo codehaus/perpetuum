@@ -23,8 +23,6 @@ public class Start extends AbstractCommand {
         String configPath = System.getProperty("perpetuum.home") + File.separator + "conf" + File.separator + "springStart.xml";
         
         if (!new File(configPath).exists()) {
-            setupDatabase();
-            
             configPath = "springStart.xml";
         } else {
             log.error(MessageFormat.format(bundle.getString("perpetuum.warning.not.found"), new Object[] {  "springStart.xml", new File(configPath).getAbsolutePath() }));
@@ -49,29 +47,13 @@ public class Start extends AbstractCommand {
             admin.setUsername("admin");
             admin.setPassword("perpetuum");
             admin.setEmail("invalid@perpetuum.codehaus.org");
+            admin.setRealname("Perpetuum Administrator");
             admin.setEnabled(true);
             
             ud.add(admin);
         }
     }
     
-    /**
-     * Used to configure Database
-     */
-    public static void setupDatabase() {
-        System.setProperty("derby.system.home", 
-            System.getProperty("perpetuum.home") + File.separator + "data");
-        
-        File derbyHome = new File(System.getProperty("perpetuum.home") + File.separator + "data");
-        
-        if (!derbyHome.exists()) {
-            derbyHome.mkdirs();
-        }
-        
-        System.setProperty("derby.stream.error.file", 
-            System.getProperty("perpetuum.logs.home") + File.separator + "derby.log");
-    }
-	
 	/**
 	 * @see org.codehaus.perpetuum.commands.AbstractCommand#getLog()
 	 */

@@ -8,8 +8,10 @@
 
     <!-- Perpetuum Data Source -->
     <bean id="perpetuumDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver" />
-        <property name="url" value="jdbc:derby:PERPETUUM;create=true" />
+        <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
+        <property name="url" value="jdbc:hsqldb:file:data/PERPETUUM" />
+        <property name="username" value="sa" />
+        <property name="password" value="" />
     </bean>
 
     <!-- Perpetuum Session Factory -->
@@ -22,9 +24,9 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.DerbyDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="hibernate.show_sql">true</prop>
+                <!-- <prop key="hibernate.show_sql">true</prop> -->
             </props>
         </property>
     </bean>

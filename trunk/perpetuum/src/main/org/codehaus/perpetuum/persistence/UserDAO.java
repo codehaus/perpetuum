@@ -1,6 +1,6 @@
 package org.codehaus.perpetuum.persistence;
 
-import java.util.Iterator;
+import java.util.List;
 
 import org.codehaus.perpetuum.model.User;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -14,13 +14,18 @@ public class UserDAO extends HibernateDaoSupport implements PerpetuumDAO {
      * @see org.codehaus.perpetuum.persistence.PerpetuumDAO#getCount()
      */
     public int getCount() {
-        Iterator i =  getSession().createQuery("from User").list().iterator();
+        List users =  null;
         int count = 0;
         
-        if (i.hasNext()) {
-            Object[] row = (Object[])i.next();
-            
-            count = Integer.parseInt((String)row[0]);
+        try {
+            users = getSession().createQuery("from User").list();
+        } catch (Exception e) {
+            // Do nothing as this logic is here only for counting users and is 
+            // handled by the calling object
+        }
+        
+        if (users != null) {
+            count = users.size();
         }
         
         return count;
