@@ -17,25 +17,6 @@ public class PerpetuumUtil {
 	public static void setup() {
 		setupClasspath();
 		setupLogging();
-		setupDatabase();
-	}
-	
-	/**
-	 * Used to set some Derby properties
-	 *
-	 */
-	public static void setupDatabase() {
-		System.setProperty("derby.system.home", 
-			System.getProperty("perpetuum.home") + File.separator + "data");
-		
-		File derbyHome = new File(System.getProperty("perpetuum.home") + File.separator + "data");
-		
-		if (!derbyHome.exists()) {
-			derbyHome.mkdirs();
-		}
-		
-        System.setProperty("derby.stream.error.file", 
-        	System.getProperty("perpetuum.logs.home") + File.separator + "derby.log");
 	}
 	
 	/**
