@@ -24,10 +24,12 @@ public class Start extends AbstractCommand {
         
         if (!new File(configPath).exists()) {
             configPath = "springStart.xml";
-        } else {
-            log.error(MessageFormat.format(bundle.getString("perpetuum.warning.not.found"), new Object[] {  "springStart.xml", new File(configPath).getAbsolutePath() }));
+        }
+        
+        if (!new File(configPath).exists()) {
+        	System.out.println(MessageFormat.format(getPBundle().getString("perpetuum.warning.not.found"), new Object[] {  new File(configPath).getAbsolutePath() }));
             
-            return;
+            return;	
         }
         
 		factory = new FileSystemXmlApplicationContext(configPath);
