@@ -81,10 +81,16 @@ public class User {
 		this.username = username;
 	}
 
+    /**
+     * @return Returns the realname
+     */
     public String getRealname() {
         return realname;
     }
 
+    /**
+     * @param realname The realname to set.
+     */
     public void setRealname(String realname) {
         this.realname = realname;
     }

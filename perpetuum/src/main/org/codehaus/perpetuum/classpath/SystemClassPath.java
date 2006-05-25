@@ -13,6 +13,14 @@ import java.net.URLClassLoader;
 public class SystemClassPath extends BasicURLClassPath {
 
     private URLClassLoader sysLoader;
+    
+    /**
+     * @see org.perpetuum.classpath.ClassPath#addPathToPath(java.io.File)
+     */
+    public void addPathToPath(File dir) throws Exception {
+        this.addPathToPath(dir, getSystemLoader());
+        this.rebuildJavaClassPathVariable();
+    }
 
     /**
      * @see org.perpetuum.classpath.ClassPath#addJarsToPath(java.io.File)

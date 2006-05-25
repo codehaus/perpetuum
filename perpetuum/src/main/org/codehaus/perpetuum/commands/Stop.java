@@ -5,6 +5,9 @@ import java.util.ResourceBundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * Command used to stop Perpetuum
+ */
 public class Stop extends AbstractCommand {
 	private Log log = LogFactory.getLog(getClass());
 	private ResourceBundle bundle = ResourceBundle.getBundle(Command.RESOURCE_PATH + getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1).toLowerCase());

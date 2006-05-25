@@ -6,16 +6,21 @@
 	<property name="main.src" value="${basedir}/src/main" />
 	<property name="main.test.src" value="${basedir}/src/test" />
 	
+	<!-- Perpetuum properties -->
+	<property file="${main.src}/perpetuum.properties" />
+	
 	<!-- Staged location properties -->
 	<property name="dist.home" value="${basedir}/dist" />
 	<property name="main.dist" value="${dist.home}/main" />
 	<property name="test.dist" value="${dist.home}/test" />
 	<property name="resources.home" value="${dist.home}/resources" />
+	<property name="dist.root" value="${dist.home}/perpetuum" />
 	
 	<!-- Report location properties -->
 	<property name="report.home" value="${dist.home}/reports" />
 	<property name="junit.report.home" value="${report.home}/junit" />
 	<property name="emma.report.home" value="${report.home}/emma" />
+	<property name="api.report.home" value="${report.home}/api" />
 	
 	<!-- EMMA properties -->
 	<property name="main.instrumented.dist" value="${basedir}/dist/main-instrumented" />
@@ -49,6 +54,7 @@
 		<pathelement location="${test.dist}" />
 		<pathelement location="${resources.home}" />
 		<fileset dir="${basedir}/lib/test" includes="*.jar" />
+		<pathelement location="${basedir}/conf" />
 	</path>
 	
 	<target description="Cleans all build artifacts" name="clean">
@@ -60,8 +66,12 @@
 		<mkdir dir="${main.instrumented.dist}" />
 		<mkdir dir="${test.dist}" />
 		<mkdir dir="${resources.home}" />
+		<mkdir dir="${dist.root}" />
+		<mkdir dir="${dist.root}/conf" />
+		<mkdir dir="${dist.root}/lib" />
 		<mkdir dir="${junit.report.home}" />
 		<mkdir dir="${emma.report.home}" />
+		<mkdir dir="${api.report.home}" />
 		
 		<copy todir="${resources.home}/commands">
 			<fileset dir="${main.src}/commands" includes="*.properties" />
@@ -71,8 +81,24 @@
 			<fileset dir="${main.src}/services" includes="*.properties" />
 		</copy>
 		
+		<copy todir="${resources.home}/mappings">
+			<fileset dir="${main.src}/mappings" includes="*.xml" />
+		</copy>
+		
 		<copy todir="${resources.home}">
 			<fileset dir="${main.src}" includes="*.properties" />
+		</copy>
+		
+		<copy todir="${dist.root}/docroot">
+			<fileset dir="${basedir}/docroot" includes="**/*.*" />
+		</copy>
+		
+		<copy todir="${dist.root}/lib">
+			<fileset dir="${basedir}/lib" includes="*.jar" />
+		</copy>
+		
+		<copy todir="${dist.root}/conf">
+			<fileset dir="${basedir}/conf" includes="**/*.*" />
 		</copy>
 	</target>
 		
@@ -129,9 +155,22 @@
 		  	</fileset>
 		  	<report format="frames" todir="${junit.report.home}"/>
 		</junitreport>
+		
+		<javadoc sourcepath="${main.src}" destdir="${api.report.home}" packagenames="org.*">
+		</javadoc>
 	</target>
 	
-	<target description="Packages Perpetuum" name="package" depends="report">
-		
+	<target description="Jars Perpetuum" name="jar" depends="build">
+		<jar destfile="${dist.root}/lib/${perpetuum.jar.name}.jar">
+			<manifest>
+				<attribute name="Main-Class" value="org.codehaus.perpetuum.PerpetuumLauncher" />
+			</manifest>
+			<fileset dir="${main.dist}" includes="**/*" />
+			<fileset dir="${resources.home}" includes="**/*" />
+		</jar>
+	</target>
+	
+	<target description="Packages Perpetuum" name="package" depends="report,jar">
+		<zip basedir="${dist.home}" zipfile="${dist.home}/${perpetuum.jar.name}.zip" includes="perpetuum/**" />
 	</target>
 </project>

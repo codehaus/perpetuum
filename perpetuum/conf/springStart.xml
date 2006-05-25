@@ -3,7 +3,7 @@
 <beans>
     <!-- Service Beans -->
     <bean id="webService" class="org.codehaus.perpetuum.services.WebService" init-method="start" destroy-method="stop">
-        <property name="port"><value>5000</value></property>
+        <property name="port"><value>5555</value></property>
     </bean>
 
     <!-- Perpetuum Data Source -->

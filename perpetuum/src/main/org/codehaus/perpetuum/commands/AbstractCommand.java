@@ -4,6 +4,11 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
 
+/**
+ * This is the abstract class that all Commands will extend.  This class provides 
+ * the handling of running the Command, parsing the Command's arguments and printing 
+ * the Command's help while other methods are delegated to the extending Command.
+ */
 public abstract class AbstractCommand implements Command {
 	public boolean help = false;
 	private ResourceBundle pBundle = ResourceBundle.getBundle("perpetuum");
