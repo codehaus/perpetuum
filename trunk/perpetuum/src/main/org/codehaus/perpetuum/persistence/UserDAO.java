@@ -31,6 +31,9 @@ public class UserDAO extends HibernateDaoSupport implements PerpetuumDAO {
         return count;
     }
     
+    /**
+     * Persists a user to the database
+     */
     public void add(Object persistable) throws NotPersistableException {
         if (persistable instanceof User) {
             User user = (User)persistable;

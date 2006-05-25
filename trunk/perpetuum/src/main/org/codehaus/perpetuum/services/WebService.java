@@ -15,7 +15,7 @@ import org.mortbay.jetty.Server;
  * WebService is the class that provides all web services to the user
  */
 public class WebService extends AbstractService {
-	private int port = 5000;
+	private int port = 5555;
 	private Server server = null;
 	private SocketListener listener = null;
 	private HttpContext rootContext = null;

@@ -58,16 +58,16 @@ public class TestWebService extends TestCase {
 	 * Test method for 'org.codehaus.perpetuum.services.WebService.getPort()'
 	 */
 	public void testGetPort() {
-	    assertEquals("Port should be 5000!", 5000, ws.getPort());
+	    assertEquals("Port should be 5555!", 5555, ws.getPort());
 	}
 
 	/*
 	 * Test method for 'org.codehaus.perpetuum.services.WebService.setPort(int)'
 	 */
 	public void testSetPort() {
-	    ws.setPort(5001);
+	    ws.setPort(5556);
         
-        assertEquals("Port should be 5001!", 5001, ws.getPort());
+        assertEquals("Port should be 5556!", 5556, ws.getPort());
 	}
 
 	/*
@@ -135,7 +135,7 @@ public class TestWebService extends TestCase {
         
         try {
             // Workaround for JUnit threading issue...
-            ws.setPort(5001);
+            ws.setPort(5556);
             
             ws.start();
             

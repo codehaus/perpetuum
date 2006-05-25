@@ -17,6 +17,17 @@ import sun.misc.URLClassPath;
  */
 public abstract class BasicURLClassPath implements ClassPath {
     private java.lang.reflect.Field ucpField;
+    
+    /**
+     * Adds a directory to the Classpath
+     */
+    protected void addPathToPath(final File dir, final URLClassLoader loader) throws Exception {
+        if (dir == null || !dir.exists()) return;
+        
+        sun.misc.URLClassPath path = getURLClassPath(loader);
+        
+        path.addURL(dir.toURL());
+    }
 
     /**
      * Adds jars to the Classpath loaded from the directory

@@ -8,7 +8,13 @@ import java.util.ResourceBundle;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.codehaus.perpetuum.classpath.SystemClassPath;
 import org.codehaus.perpetuum.commands.Command;
+import org.codehaus.perpetuum.model.User;
+import org.codehaus.perpetuum.persistence.UserDAO;
+import org.springframework.context.ApplicationContext;
 
+/**
+ * This is a utility class for performing mundane tasks
+ */
 public class PerpetuumUtil {
 	
 	/**
@@ -71,7 +77,7 @@ public class PerpetuumUtil {
                 }
                 jarFile = new File(jarURL.getFile());
                 
-                if (jarFile.getName().equals(ResourceBundle.getBundle("perpetuum").getString("jar.name"))) {
+                if (jarFile.getName().equals(ResourceBundle.getBundle("perpetuum").getString("perpetuum.jar.name") + ".jar")) {
                     File lib = jarFile.getParentFile();
                     File home = lib.getParentFile();
                     
@@ -92,11 +98,16 @@ public class PerpetuumUtil {
 			systemCP.addJarsToPath(lib);
 			
 			systemCP.addJarsToPath(ext);
+            
+			systemCP.addPathToPath(new File(System.getProperty("perpetuum.home") + File.separator + "conf"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
+    /**
+     * Tests for whether or not Perpetuum is in debug mode or not
+     */
 	public static boolean isDebugOn() {
 		boolean debug = false;
 		String debugAsString = System.getProperty("perpetuum.debug");
@@ -108,6 +119,9 @@ public class PerpetuumUtil {
 		return debug;
 	}
 	
+    /**
+     * Tests for whether or not Perpetuum is in verbose mode or not
+     */
 	public static boolean isVerboseOn() {
 		boolean verbose = false;
 		String verboseAsString = System.getProperty("perpetuum.verbose");
@@ -118,4 +132,23 @@ public class PerpetuumUtil {
 		
 		return verbose;
 	}
+    
+    /**
+     * Creats the default Administrator user for Perpetuum
+     */
+    public static void createAdminUser(ApplicationContext factory) {
+        UserDAO ud = (UserDAO)factory.getBean("userDAO");
+        
+        if (ud.getCount() < 1) {
+            User admin = new User();
+            
+            admin.setUsername("admin");
+            admin.setPassword("perpetuum");
+            admin.setEmail("invalid@perpetuum.codehaus.org");
+            admin.setRealname("Perpetuum Administrator");
+            admin.setEnabled(true);
+            
+            ud.add(admin);
+        }
+    }
 }

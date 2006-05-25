@@ -31,7 +31,7 @@ public class PerpetuumLauncher {
 		} catch (Exception e) {
 			// Should never happen but just in case...
 			
-			System.out.println("Unable to find the Perpetuum ResourceBundle");
+			System.out.println(e.getLocalizedMessage());
 			
 			System.exit(1);
 		}
@@ -146,7 +146,7 @@ public class PerpetuumLauncher {
                             while (commands.hasMoreElements()) {
                                 JarEntry je = (JarEntry)commands.nextElement();
                                 
-                                if (je.getName().indexOf(Command.PATH) > -1 && !je.getName().equals(Command.PATH)) {
+                                if (je.getName().indexOf(Command.PATH) > -1 && !je.getName().equals(Command.PATH) && je.getName().indexOf(Command.PATH) == 0) {
                                     String command = je.getName().substring(je.getName().lastIndexOf("/") + 1);
                                     ResourceBundle bundle = ResourceBundle.getBundle(Command.RESOURCE_PATH + command.substring(0, command.indexOf("."))); 
                                     System.out.println("\n  " + bundle.getString("command.name") + " - " + bundle.getString("command.description"));

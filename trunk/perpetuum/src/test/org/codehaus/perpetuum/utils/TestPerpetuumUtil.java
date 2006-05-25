@@ -44,4 +44,17 @@ public class TestPerpetuumUtil extends TestCase {
 		
 		assertFalse("Should return false since perpetuum.debug is set to something besides \"true\"!", PerpetuumUtil.isDebugOn());
 	}
+    
+    /**
+     * Test method for 'org.codehaus.perpetuum.utils.PerpetuumUtil.isVerboseOn()'
+     */
+    public void testIsVerboseOn() {
+        System.setProperty("perpetuum.verbose", "true");
+        
+        assertTrue("Should return true since perpetuum.verbose is set to \"true\"!", PerpetuumUtil.isVerboseOn());
+        
+        System.setProperty("perpetuum.verbose", "false");
+        
+        assertFalse("Should return false since perpetuum.verbose is set to something besides \"true\"!", PerpetuumUtil.isVerboseOn());
+    }
 }
